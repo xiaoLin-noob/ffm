@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="table-box">
+  <!-- 数据表格 -->
+  <table id="dataList" class="table table-bordered text-center">
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>标题</th>
+      <th>用户名</th>
+      <th>金额</th>
+      <th>类型</th>
+      <th>支付方式</th>
+      <th>时间</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr th:each="bill:${page.list}">
+        <td>[[${bill.id}]]</td>
+        <td>[[${bill.title}]]</td>
+        <td>[[${bill.user.username}]]</td>
+        <td>[[${bill.money}]]</td>
+        <td>
+            <p th:if="${bill.type} eq 1">支出</p>
+            <p th:if="${bill.type} eq 0">收入</p>
+        </td>
+        <td>[[${bill.payWay.payWay}]]</td>
+        <td>[[${bill.time}]]</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

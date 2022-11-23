@@ -1,5 +1,7 @@
 package com.lin.ffm.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lin.ffm.dao.BillDao;
 import com.lin.ffm.pojo.Bill;
 import com.lin.ffm.service.BillService;
@@ -16,16 +18,26 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     private BillDao billDao;
+
     @Override
-    public List<Bill> findAllBill() {
-        return billDao.findAllBill();
+    public PageInfo<Bill> findBills(Bill bill,Integer pageNum,Integer pageSize) {
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        if (pageSize == null){
+            pageSize =5;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<Bill> bills = billDao.findBills(bill);
+        PageInfo<Bill> page = new PageInfo<>(bills);
+        return page;
     }
 
     @Override
-    public int changeBill(Bill bill) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String currentTime = dateFormat.format(new Date());
-        bill.setTime(currentTime);
-        return billDao.changeBill(bill);
+    public int editBill(Bill bill) {
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//        String currentTime = dateFormat.format(new Date());
+//        bill.setTime(currentTime);
+        return billDao.editBill(bill);
     }
 }

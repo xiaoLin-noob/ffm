@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lin.ffm.dao.BillDao">
+
+    <resultMap id="billResult" type="com.lin.ffm.pojo.Bill">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="userId" property="userId"/>
+        <result column="money" property="money"/>
+        <result column="type" property="type"/>
+        <result column="payWayId" property="payWayId"/>
+        <result column="time" property="time"/>
+        <association property="user" javaType="com.lin.ffm.pojo.User">
+            <id column="uid" property="id"></id>
+            <result column="username" property="username"></result>
+        </association>
+        <association property="payWay" javaType="com.lin.ffm.pojo.PayWay">
+            <id column="pid" property="id"></id>
+            <result column="payWay" property="payWay"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findBills" parameterType="com.lin.ffm.pojo.Bill" resultMap="billResult">
+        select b.*,u.id as uid,u.username,p.id as pid,p.payway
+        from bill b
+        left join user u on b.userId = u.id
+        left join payway p on b.paywayid = p.id
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+                or username like concat('%',#{title},'%')
+            </if>
+            <if test="userId != null and userId != ''">
+                and userId = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <update id="editBill" parameterType="com.lin.ffm.pojo.Bill">
+        update Bill
+        <set>
+            <if test=" title != null and title != null">
+                ,title=#{title}
+            </if>
+            <if test="money != null and money != ''">
+                ,money=#{money}
+            </if>
+            <if test="type != null and type != ''">
+                ,type=#{type}
+            </if>
+            <if test="payWayId != null and payWayId != ''">
+                ,payWayId=#{payWayId}
+            </if>
+        </set>
+        <where>
+            id= #{id}
+        </where>
+    </update>
+</mapper>
+
+
