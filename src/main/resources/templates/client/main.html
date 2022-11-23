@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>云借阅-图书管理系统</title>
+    <link rel="stylesheet" href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="/css/AdminLTE.css">
+    <link rel="stylesheet" href="/css/_all-skins.min.css">
+    <script type="text/javascript">
+        function SetIFrameHeight() {
+            var iframeid = document.getElementById("iframe");
+            if (document.getElementById) {
+                /*设置 内容展示区的高度等于页面可视区的高度*/
+                iframeid.height = document.documentElement.clientHeight;
+            }
+        }
+    </script>
+</head>
+
+<body class="hold-transition skin-green sidebar-mini">
+<div class="wrapper">
+    <!-- 页面头部 -->
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-lg"><b>云借阅-图书管理系统</b></span>
+        </a>
+        <!-- 头部导航 -->
+        <nav class="navbar navbar-static-top">
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a>
+                            <img src="/img/user.jpg" class="user-image">
+                            <span class="hidden-xs">你好!<%=request.getSession().getAttribute("USER_SESSION") %>。</span>
+                        </a>
+                    </li>
+                    <li class="dropdown user user-menu">
+                        <a href="/logout">
+                            <span class="hidden-xs">注销</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <!-- 导航侧栏 -->
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li >
+                    <a href="/bill" target="iframe">
+                        <i class="fa fa-circle-o"></i>账单管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/bookBorrowed" target="iframe">
+                        <i class="fa fa-circle-o"></i>贷款管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/record" target="iframe">
+                        <i class="fa fa-circle-o"></i>投资管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/record" target="iframe">
+                        <i class="fa fa-circle-o"></i>个人中心
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- 导航侧栏 /-->
+    <!-- 内容展示区域 -->
+    <div class="content-wrapper">
+        <iframe width="100%" id="iframe" name="iframe" onload="SetIFrameHeight()"
+                frameborder="0" src=""></iframe>
+    </div>
+</div>
+</body>
+</html>

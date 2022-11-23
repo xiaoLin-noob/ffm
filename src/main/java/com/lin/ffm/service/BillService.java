@@ -1,12 +1,13 @@
 package com.lin.ffm.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lin.ffm.pojo.Bill;
 
 import java.util.List;
 
 public interface BillService {
 
-    List<Bill> findAllBill();
+    PageInfo<Bill> findBills(Bill bill,Integer pageNum,Integer pageSize);
 
-    int changeBill(Bill bill);
+    int editBill(Bill bill);
 }

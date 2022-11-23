@@ -2,6 +2,7 @@ package com.lin.ffm.pojo;
 
 import javax.xml.crypto.Data;
 
+
 public class Bill {
 
     private int id;
