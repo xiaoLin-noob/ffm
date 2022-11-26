@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int changePassword(int id) {
-        return userDao.changePassword(id);
+    public int editUser(User user) {
+        return userDao.editUser(user);
     }
 
     @Override

@@ -14,7 +14,7 @@ public interface UserService {
 
     User findUserById(int id);
 
-    int changePassword(int id);
+    int editUser(User user);
 
     int register(User user);
 }

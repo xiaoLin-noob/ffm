@@ -7,6 +7,7 @@ public class User {
     private String password;
     private String role;
     private String houseId;
+    private int msgId;
 
     public int getId() {
         return id;
@@ -48,6 +49,14 @@ public class User {
         this.houseId = houseId;
     }
 
+    public int getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(int msgId) {
+        this.msgId = msgId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -55,6 +64,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", houseId='" + houseId + '\'' +
+                ", msgId='" + msgId + '\'' +
                 '}';
     }
 }

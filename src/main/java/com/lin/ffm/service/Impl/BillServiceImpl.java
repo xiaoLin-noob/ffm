@@ -35,9 +35,29 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public int editBill(Bill bill) {
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        String currentTime = dateFormat.format(new Date());
-//        bill.setTime(currentTime);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        bill.setTime(currentTime);
         return billDao.editBill(bill);
     }
+
+    @Override
+    public Bill findBillById(int id) {
+        return billDao.findBillById(id);
+    }
+
+    @Override
+    public int deleteBill(int id) {
+        return billDao.deleteBill(id);
+    }
+
+    @Override
+    public int addBill(Bill bill) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        bill.setTime(currentTime);
+        return billDao.addBill(bill);
+    }
+
+
 }

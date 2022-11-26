@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lin.ffm.dao.UserDao">
+    <update id="editUser" parameterType="com.lin.ffm.pojo.User" >
+        update user
+        <set>
+            <if test=" username != null and username != null">
+                ,username=#{username}
+            </if>
+            <if test=" password != null and password != null">
+                ,password=#{password}
+            </if>
+            <if test=" role != null and role != null">
+                ,role=#{role}
+            </if>
+            <if test=" msgId != null and msgId != null">
+                ,msgId=#{msgId}
+            </if>
+            <if test=" houseId != null and houseId != null">
+                ,houseId=#{houseId}
+            </if>
+            <where>
+                id = #{id}
+            </where>
+        </set>
+    </update>
+</mapper>

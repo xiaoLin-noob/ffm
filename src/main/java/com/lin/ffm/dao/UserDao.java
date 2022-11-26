@@ -23,11 +23,9 @@ public interface UserDao {
     @Select("select * from user where id=#{id}")
     User findUserById(int id);
 
-    @Update("update user set password = #{password} where id=#{id}")
-    int changePassword(int id);
+    int editUser(User user);
 
     @Insert("Insert into user (username,password,role,houseId) values (#{username},#{password},#{role},#{houseId})")
     int register(User user);
-
 
 }

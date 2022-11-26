@@ -19,5 +19,15 @@ public interface BillDao {
     int editBill(Bill bill);
 
 
+    @Select("select * from bill where id=#{id}")
+    Bill findBillById(int id);
+
+
+    @Delete("delete from bill where id = #{id}")
+    int deleteBill(int id);
+
+    @Insert("insert into Bill (title,userId,money,type,payWayId,time) values(#{title},#{userId},#{money},#{type},#{payWayId},#{time})")
+    int addBill(Bill bill);
+
 
 }
