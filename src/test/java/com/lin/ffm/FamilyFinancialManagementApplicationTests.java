@@ -1,6 +1,7 @@
 package com.lin.ffm;
 
 import com.github.pagehelper.PageInfo;
+import com.lin.ffm.controller.UserController;
 import com.lin.ffm.dao.BillDao;
 import com.lin.ffm.dao.UserDao;
 import com.lin.ffm.pojo.Bill;
@@ -70,8 +71,20 @@ class FamilyFinancialManagementApplicationTests {
 
     @Test
     public void test(){
+        String ts = "123";
+        String test = encryptionPwd(ts);
+        System.out.println(test);
+    }
 
-        System.out.println(billService.outYear(2,2022,2,1));
+    public String encryptionPwd(String pwd){
+        String encryptedPwd = null;
+        try {
+            //加密
+            encryptedPwd = MyMD5Util.getEncryptedPwd(pwd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return encryptedPwd;
     }
 
 }

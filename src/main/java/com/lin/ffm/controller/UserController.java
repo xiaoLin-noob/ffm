@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class UserController {
@@ -75,57 +77,81 @@ public class UserController {
 
     @RequestMapping("/editMessage")
     public String editMessage(Message msg,HttpSession session){
-        User user = (User) session.getAttribute("USER_SESSION");
-        if (user.getMsgId() == 0){
-            Message m =messageService.addMessage(msg);
-            if (m != null) {
-                user.setMsgId(m.getId());
-                userService.editUser(user);
-                //return "添加成功";
-                return "redirect:/user";
-            }
-        }
-//        else {
-//            Message m =messageService.editMessage(msg);
+//        User user = (User) session.getAttribute("USER_SESSION");
+//        if (user.getMsgId() == 0){
+//            Message m =messageService.addMessage(msg);
 //            if (m != null) {
-//                //return "修改成功";
+//                user.setMsgId(m.getId());
+//                userService.editUser(user);
+//                //return "添加成功";
 //                return "redirect:/user";
 //            }
+//        } else {
+            Message m =messageService.editMessage(msg);
+            if (m != null) {
+                //return "修改成功";
+                return "redirect:/user";
+            }
 //        }
         //return "失败，请过几分钟后重试。";
         return "redirect:/user";
     }
 
+    @ResponseBody
     @RequestMapping("/editPassword")
-    public void editPassword(String password,String pwd,HttpSession session){
+    public String editPassword(String oldPwd, String pwd, HttpSession session) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         User u = (User) session.getAttribute("USER_SESSION");
-        System.out.println(u.toString());
-
+        boolean flag = false;
+        String newPwd = null;
+        flag = MyMD5Util.validPassword(oldPwd,u.getPassword());
+        if (flag){
+            newPwd=encryptionPwd(pwd);
+            u.setPassword(newPwd);
+            userService.editUser(u);
+            return "修改成功";
+        }else {
+            return "密码不正确";
+        }
     }
 
     @ResponseBody
     @RequestMapping("/register")
     public String register(User user) {
-        String encryptedPwd = null;
         int result = 0;
-        boolean flag = false;
+        String pwd = null;
         User u = userService.login(user);
         if (u != null) {
             return "用户已存在";
         } else {
             try {
                 //加密
-                encryptedPwd = MyMD5Util.getEncryptedPwd(user.getPassword());
-                user.setPassword(encryptedPwd);
+                pwd = encryptionPwd(user.getPassword());
+                user.setPassword(pwd);
                 result = userService.register(user);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         if (result>0){
-            return null;
+            return "注册成功";
         }else {
-            return null;
+            return "注册失败";
         }
     }
+
+    //加密
+    public String encryptionPwd(String pwd){
+        String encryptedPwd = null;
+        try {
+            //加密
+            encryptedPwd = MyMD5Util.getEncryptedPwd(pwd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return encryptedPwd;
+    }
+
+
+
+
 }

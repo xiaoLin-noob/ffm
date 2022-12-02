@@ -23,6 +23,22 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="/css/pe-icon-7-stroke.css" rel="stylesheet" th:href="@{/css/pe-icon-7-stroke.css}"/>
 
+    <script>
+        function editPwd(){
+            var pwd = $('#pwd').val();
+            var pwd2 = $('#pwd2').val();
+            var url = "editPassword";
+            if (pwd == pwd2){
+                $.get(url,$("#editPwd").serialize(),function (data){
+                    alert(data);
+                })
+            }else {
+                alert("两次输入的密码不一样,请重新输入");
+            }
+
+        }
+    </script>
+
 </head>
 <body>
 
@@ -128,7 +144,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/user">个人中心</a></li>
-                                <li><a href="#">修改密码</a></li>
+                                <li><a data-toggle="modal"
+                                       data-target="#editPwdModal" >修改密码</a></li>
                                 <li><a href="#">Something</a></li>
                                 <li><a href="#">Another action</a></li>
                                 <li><a href="#">Something</a></li>
@@ -223,15 +240,13 @@
                             </div>
                             <div class="content">
                                 <div class="author">
-                                     <a href="#">
                                     <img class="avatar border-gray" src="/img/face-0.jpg" th:src="@{/img/face-0.jpg}"/>
 
                                       <h4 class="title" th:text="${user.username}">Mike Andrew<br />
-                                         <small th:text="${userMsg.email}">michael24</small>
                                       </h4>
-                                    </a>
+                                         <small th:text="${userMsg.email}">michael24</small>
                                 </div>
-                                <p class="description text-center" th:text="${userMsg.msg}"> "Lamborghini Mercy <br>
+                                <p style="margin-top: 20px" class="description text-center" th:text="${userMsg.msg}"> "Lamborghini Mercy <br>
                                                     Your chick she so thirsty <br>
                                                     I'm in that two seat Lambo"
                                 </p>
@@ -283,6 +298,42 @@
             </div>
         </footer>
 
+    </div>
+</div>
+
+
+
+
+
+<!-- 修改密码的模态框 -->
+<div class="modal fade" id="editPwdModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #42d0ed">
+                <h3>修改密码</h3>
+            </div>
+            <form id="editPwd">
+                <div class="modal-body">
+                    <table id="addTab" class="table">
+                        <tr>
+                            <td>旧密码:
+                                <input type="password" class="form-control" name="oldPwd" id="oldPwd"></td>
+                        </tr>
+                        <tr>
+                            <td>新密码:<input type="password" class="form-control" name="pwd" id="pwd"></td>
+                        </tr>
+                        <tr>
+                            <td>确认新密码:<input type="password" class="form-control" id="pwd2"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info btn-fill" data-dismiss="modal" aria-hidden="true" onclick="editPwd()">保存
+                    </button>
+                    <button class="btn btn-default btn-fill" data-dismiss="modal" aria-hidden="true">关闭</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
