@@ -3,6 +3,8 @@ package com.lin.ffm.service;
 import com.github.pagehelper.PageInfo;
 import com.lin.ffm.pojo.Bill;
 
+import java.util.List;
+
 
 public interface BillService {
 
@@ -15,4 +17,8 @@ public interface BillService {
     int deleteBill(int id);
 
     int addBill(Bill bill);
+
+
+
+    Double outYear(int id,int year,int month,int type);
 }

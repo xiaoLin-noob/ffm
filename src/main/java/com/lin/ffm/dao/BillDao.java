@@ -8,11 +8,8 @@ import java.util.List;
 @Mapper
 public interface BillDao {
 
-//    @Select("Select b.*,u.id as uid,u.username,p.id as pid,p.payway from bill b,user u,payway p where b.userId = u.id and b.paywayid = p.id")
-//    @Results({@Result(column = "uid",property = "user.id"),
-//              @Result(column = "pid",property = "payWay.id"),
-//              @Result(column = "username",property = "user.username"),
-//              @Result(column = "payway",property = "payWay.payWay")})
+
+//    @Select("select * from bill")
     List<Bill> findBills(Bill bill);
 
     //@Update("update Bill set title=#{title},money=#{money},type=#{type},payWayId=#{payWayId} where id= #{id}")
@@ -29,5 +26,11 @@ public interface BillDao {
     @Insert("insert into Bill (title,userId,money,type,payWayId,time) values(#{title},#{userId},#{money},#{type},#{payWayId},#{time})")
     int addBill(Bill bill);
 
+
+    @Select("select sum(case month(time) when #{month} then money else 0 end) as #{month}月\n" +
+            "from bill  where userId = #{id}\n" +
+            "and year(time)=#{year}\n" +
+            "and type = #{type};")
+    Double outYear(int id,int year,int month,int type);
 
 }

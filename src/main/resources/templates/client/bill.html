@@ -23,6 +23,17 @@
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
   <link href="/css/pe-icon-7-stroke.css" rel="stylesheet" th:href="@{/css/pe-icon-7-stroke.css}"/>
 
+  <script type="text/javascript">
+    function showSearch (){
+      var show = document.getElementById("search_bill").style.display;
+      if (show == "none"){
+        document.getElementById("search_bill").style.display="inline-block";
+      }else {
+        document.getElementById("search_bill").style.display="none";
+      }
+    }
+  </script>
+
 </head>
 <body>
 
@@ -45,7 +56,7 @@
 
       <ul class="nav">
         <li>
-          <a href="/toMain">
+          <a href="/dashboard">
             <i class="pe-7s-graph"></i>
             <p>分析</p>
           </a>
@@ -105,10 +116,21 @@
               </a>
             </li>
             <li>
-              <a href="">
+              <a onclick="showSearch()">
                 <i class="fa fa-search"></i>
                 <p class="hidden-lg hidden-md">Search</p>
               </a>
+            </li>
+            <li id="search_bill" style="display: none;height: 58px;line-height: 58px;" >
+              <form action="/bill" style="border-radius: 8px 8px 0px 0px">
+                <input style="border: none;" name="title" placeholder="输入想要搜索的内容">
+                <select class="select" name="type">
+                  <option value="">全部</option>
+                  <option value="0">收入</option>
+                  <option value="1">支出</option>
+                </select>
+                <button style="border: none;background: white" type="submit"><i class="fa fa-search"></i></button>
+              </form>
             </li>
           </ul>
 
@@ -120,14 +142,14 @@
             </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <p>
+                <p th:text="${session.USER_SESSION.getUsername()}">
                   Dropdown
                   <b class="caret"></b>
                 </p>
 
               </a>
               <ul class="dropdown-menu">
-                <li><a href="#">个人中心</a></li>
+                <li><a href="/user">个人中心</a></li>
                 <li><a href="#">修改密码</a></li>
                 <li><a href="#">Something</a></li>
                 <li><a href="#">Another action</a></li>
@@ -167,7 +189,7 @@
                     <th style="text-align: center">金额</th>
                     <th style="text-align: center">类型</th>
                     <th style="text-align: center">支付方式</th>
-                    <th style="text-align: center">最后修改时间</th>
+                    <th style="text-align: center">时间</th>
                     <th style="text-align: center">操作</th>
                   </thead>
                   <tbody style="text-align: center">
@@ -192,23 +214,21 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
-
+      <div id="pagination" style="display: block" class="pagination">
+        <ul class="pagination" style="margin-left: 45%">
+          <li th:each="i:${#numbers.sequence(1,page.pages)}" >
+            <a th:href="'/bill?title='+${search.title}+'&type='+${search.type}+'&pageNum='+${i}" th:text="${i}"></a>
+          </li>
+        </ul>
+      </div>
     </div>
 
-<!--    <div id="pagination" class="pagination">-->
-<!--      <ul class="pagination" style="margin-left: 45%" th:each="i:${page.pages}">-->
-
-<!--        <li th:if="${page.pageNum} eq i" class="active"><a><p th:if="${i}"></p></a></li>-->
 
 
-<!--            <li class="active" th:if="${page.pageNum} ne i">-->
-<!--              <a href="/findBooks?name=${search.name}&author=${author}&pageNum=${i}&pageSize=${page.pageSize}">[[${i}]]</a>-->
-<!--            </li>-->
-<!--      </ul>-->
-<!--    </div>-->
+
+
 
       <footer class="footer">
       <div class="container-fluid">
@@ -253,33 +273,28 @@
 <div class="modal fade" id="addModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background: #42d0ed">
         <h3>添加账单</h3>
       </div>
       <form id="addBill">
         <div class="modal-body">
           <!--图书的id,不展示在页面-->
-          <table id="addTab" class="table table-bordered table-striped">
+          <table id="addTab" class="table">
             <tr>
-              <td>标题</td>
-              <td colspan="3">
+              <td>标题:
                 <input class="form-control" name="title" id="atitle"></td>
             </tr>
             <tr>
-<!--              <input type="hidden" th:value="${page.list.user.id}" id="auserId" name="userId">-->
-              <td>金额</td>
-              <td><input class="form-control" name="money" id="amoney"></td>
+              <td>金额:<input class="form-control" name="money" id="amoney"></td>
             </tr>
             <tr>
-              <td>类型</td>
-              <td>
-                <label><input type="radio" class="form-control " name="type" value="1" checked> 支出</label>
-                <label><input type="radio" class="form-control " name="type" value="0"> 收入</label>
+              <td style="height: 30px">类型:
+                <label style="line-height: 55px;margin-left: 50px"><input type="radio"  name="type" value="1" checked> 支出</label>
+                <label style="line-height: 55px;margin-left: 50px;"><input type="radio"  name="type" value="0"> 收入</label>
               </td>
             </tr>
             <tr>
-              <td>支付方式</td>
-              <td>
+              <td>支付方式:
                 <select class="form-control" name="payWayId">
                   <option value="1">现金</option>
                   <option value="2">支付宝</option>
@@ -289,10 +304,13 @@
                 </select>
               </td>
             </tr>
+            <tr>
+              <td>时间:<input class="form-control" type="date" name="time" id="atime"></td>
+            </tr>
           </table>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-success btn-fill" data-dismiss="modal" aria-hidden="true" onclick="addBill()">保存
+          <button class="btn btn-info btn-fill" data-dismiss="modal" aria-hidden="true" onclick="addBill()">保存
           </button>
           <button class="btn btn-default btn-fill" data-dismiss="modal" aria-hidden="true">关闭</button>
         </div>
@@ -319,29 +337,26 @@
       </div>
       <form id="editBill">
         <div class="modal-body">
-          <!--图书的id,不展示在页面-->
+          <!--id,不展示在页面-->
           <span><input type="hidden" id="eid" name="id"></span>
           <table id="editTab" class="table table-bordered table-striped">
             <tr>
-              <td>标题</td>
-              <td colspan="3">
+              <td>标题:
                 <input class="form-control" name="title" id="etitle"></td>
             </tr>
             <tr>
               <input type="hidden" id="euserId" name="userId">
-              <td>金额</td>
-              <td><input class="form-control" name="money" id="emoney"></td>
+              <td>金额:<input class="form-control" name="money" id="emoney"></td>
              </tr>
             <tr>
-              <td>类型</td>
               <td>
-                <label><input type="radio" class="form-control " name="type" value="1" checked> 支出</label>
-                <label><input type="radio" class="form-control " name="type" value="0"> 收入</label>
+                类型:
+                <label><input type="radio" name="type" value="1" checked> 支出</label>
+                <label><input type="radio" name="type" value="0"> 收入</label>
               </td>
             </tr>
               <tr>
-                <td>支付方式</td>
-                <td>
+                <td>支付方式:
                 <select class="form-control" name="payWayId">
                   <option value="1">现金</option>
                   <option value="2">支付宝</option>
@@ -351,6 +366,9 @@
                 </select>
                 </td>
               </tr>
+            <tr>
+              <td>时间:<input class="form-control" type="date" name="time" id="etime"></td>
+            </tr>
           </table>
         </div>
         <div class="modal-footer">
@@ -374,8 +392,6 @@
 <!--   Core JS Files   -->
 <script src="/js/jquery.3.2.1.min.js" type="text/javascript" th:href="@{/js/jquery.3.2.1.min.js}"></script>
 <script src="/js/bootstrap.min.js" type="text/javascript" th:href="@{/js/bootstrap.min.js}"></script>
-<!--  Charts Plugin -->
-<script src="/js/chartist.min.js" th:href="@{/js/chartist.min.js}"></script>
 <!--  Notifications Plugin    -->
 <script src="/js/bootstrap-notify.js" th:href="@{/js/bootstrap-notify.js}"></script>
 <!--  Google Maps Plugin    -->
@@ -383,7 +399,5 @@
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 <script src="/js/light-bootstrap-dashboard.js?v=1.4.0" th:href="@{/js/light-bootstrap-dashboard.js}"></script>
 <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-<script src="/js/demo.js" th:href="@{/js/demo.js}"></script>
 
-<script src="/css/Pagination.js" th:href="@{/css/Pagination.js}"/>
 </html>

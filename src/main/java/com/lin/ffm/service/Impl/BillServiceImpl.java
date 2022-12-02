@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,9 +36,6 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public int editBill(Bill bill) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String currentTime = dateFormat.format(new Date());
-        bill.setTime(currentTime);
         return billDao.editBill(bill);
     }
 
@@ -53,10 +51,12 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public int addBill(Bill bill) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String currentTime = dateFormat.format(new Date());
-        bill.setTime(currentTime);
         return billDao.addBill(bill);
+    }
+
+    @Override
+    public Double outYear(int id, int year,int month, int type) {
+        return billDao.outYear(id, year,month, type);
     }
 
 

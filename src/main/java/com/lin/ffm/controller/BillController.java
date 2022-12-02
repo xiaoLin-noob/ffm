@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Controller
@@ -18,10 +19,6 @@ public class BillController {
     @Autowired
     private BillService billService;
 
-    @RequestMapping("toMain")
-    public String toMain(){
-        return "client/main";
-    }
 
     @RequestMapping("bill")
     public String test( Bill bill,Model model,Integer pageNum,Integer pageSize, HttpSession session){
@@ -29,7 +26,7 @@ public class BillController {
         bill.setUserId(u.getId());
         PageInfo<Bill> page = billService.findBills(bill,pageNum,pageSize);
         model.addAttribute("page",page);
-        //model.addAttribute("search",bill);
+        model.addAttribute("search",bill);
         return "client/bill";
     }
 

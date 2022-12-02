@@ -50,7 +50,7 @@ public class UserController {
             if (u.getRole() .equals("admin")){
                 return "admin/main";
             }
-            return "client/main";
+            return "redirect:/dashboard";
         }else {
             model.addAttribute("msg","密码错误");
         }
@@ -84,20 +84,23 @@ public class UserController {
                 //return "添加成功";
                 return "redirect:/user";
             }
-        }else {
-            Message m =messageService.editMessage(msg);
-            if (m != null) {
-                //return "修改成功";
-                return "redirect:/user";
-            }
         }
+//        else {
+//            Message m =messageService.editMessage(msg);
+//            if (m != null) {
+//                //return "修改成功";
+//                return "redirect:/user";
+//            }
+//        }
         //return "失败，请过几分钟后重试。";
         return "redirect:/user";
     }
 
-    @RequestMapping("/updatePassword")
-    public String updatePassword(User user){
-        return null;
+    @RequestMapping("/editPassword")
+    public void editPassword(String password,String pwd,HttpSession session){
+        User u = (User) session.getAttribute("USER_SESSION");
+        System.out.println(u.toString());
+
     }
 
     @ResponseBody

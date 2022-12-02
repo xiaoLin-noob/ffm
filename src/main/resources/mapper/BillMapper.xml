@@ -31,13 +31,17 @@
         <where>
             <if test="title != null and title != ''">
                 and title like concat('%',#{title},'%')
-                or username like concat('%',#{title},'%')
+
             </if>
             <if test="userId != null and userId != ''">
                 and userId = #{userId}
             </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
         </where>
     </select>
+
 
     <update id="editBill" parameterType="com.lin.ffm.pojo.Bill">
         update Bill

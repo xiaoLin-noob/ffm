@@ -1,5 +1,6 @@
 package com.lin.ffm;
 
+import com.github.pagehelper.PageInfo;
 import com.lin.ffm.dao.BillDao;
 import com.lin.ffm.dao.UserDao;
 import com.lin.ffm.pojo.Bill;
@@ -11,8 +12,11 @@ import com.lin.ffm.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -59,6 +63,15 @@ class FamilyFinancialManagementApplicationTests {
         message.setAddress("333");
         message.setMsg("西红柿");
         System.out.println(messageRepository.save(message));
+    }
+
+
+
+
+    @Test
+    public void test(){
+
+        System.out.println(billService.outYear(2,2022,2,1));
     }
 
 }

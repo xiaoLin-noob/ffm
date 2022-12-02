@@ -45,7 +45,7 @@
 
             <ul class="nav">
                 <li>
-                    <a href="/toMain">
+                    <a href="/dashboard">
                         <i class="pe-7s-graph"></i>
                         <p>分析</p>
                     </a>
@@ -120,14 +120,14 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <p>
+                                <p th:text="${session.USER_SESSION.getUsername()}">
                                     Dropdown
                                     <b class="caret"></b>
                                 </p>
 
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">个人中心</a></li>
+                                <li><a href="/user">个人中心</a></li>
                                 <li><a href="#">修改密码</a></li>
                                 <li><a href="#">Something</a></li>
                                 <li><a href="#">Another action</a></li>
@@ -289,12 +289,10 @@
 
 </body>
 
-<script src="/js/my.js" type="text/javascript" th:href="@{/js/my.js}"/>
+
 <!--   Core JS Files   -->
 <script src="/js/jquery.3.2.1.min.js" type="text/javascript" th:href="@{/js/jquery.3.2.1.min.js}"></script>
 <script src="/js/bootstrap.min.js" type="text/javascript" th:href="@{/js/bootstrap.min.js}"></script>
-<!--  Charts Plugin -->
-<script src="/js/chartist.min.js" th:href="@{/js/chartist.min.js}"></script>
 <!--  Notifications Plugin    -->
 <script src="/js/bootstrap-notify.js" th:href="@{/js/bootstrap-notify.js}"></script>
 <!--  Google Maps Plugin    -->
@@ -302,6 +300,5 @@
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 <script src="/js/light-bootstrap-dashboard.js?v=1.4.0" th:href="@{/js/light-bootstrap-dashboard.js}"></script>
 <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-<script src="/js/demo.js" th:href="@{/js/demo.js}"></script>
 
 </html>
