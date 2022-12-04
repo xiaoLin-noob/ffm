@@ -6,19 +6,19 @@
     <update id="editUser" parameterType="com.lin.ffm.pojo.User" >
         update user
         <set>
-            <if test=" username != null and username != null">
+            <if test=" username != null and username != ''">
                 ,username=#{username}
             </if>
-            <if test=" password != null and password != null">
+            <if test=" password != null and password != ''">
                 ,password=#{password}
             </if>
-            <if test=" role != null and role != null">
+            <if test=" role != null and role != ''">
                 ,role=#{role}
             </if>
-            <if test=" msgId != null and msgId != null">
+            <if test=" msgId != null and msgId != ''">
                 ,msgId=#{msgId}
             </if>
-            <if test=" houseId != null and houseId != null">
+            <if test=" houseId != null and houseId != ''">
                 ,houseId=#{houseId}
             </if>
             <where>
@@ -26,4 +26,19 @@
             </where>
         </set>
     </update>
+    
+    <select id="findAllUser" parameterType="com.lin.ffm.pojo.User" resultType="com.lin.ffm.pojo.User">
+        select * from user
+        <where>
+            <if test=" username != null and username != '' and username != 'null'">
+                and username like concat('%',#{username},'%')
+            </if>
+            <if test=" role != null and role != '' and role != 'null'">
+                and role=#{role}
+            </if>
+            <if test=" houseId != null and houseId != '' and houseId != 'null'">
+                and houseId=#{houseId}
+            </if>
+        </where>
+    </select>
 </mapper>

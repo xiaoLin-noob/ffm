@@ -1,6 +1,9 @@
 package com.lin.ffm.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lin.ffm.dao.UserDao;
+import com.lin.ffm.pojo.Bill;
 import com.lin.ffm.pojo.User;
 import com.lin.ffm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +24,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userDao.findAllUser();
+    public PageInfo<User> findAllUser(User user,Integer pageNum, Integer pageSize) {
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        if (pageSize == null){
+            pageSize =5;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> users = userDao.findAllUser(user);
+        PageInfo<User> page = new PageInfo<>(users);
+        return page;
     }
 
     @Override
@@ -42,7 +54,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int register(User user) {
-        user.setRole("user");
         return userDao.register(user);
+    }
+
+    @Override
+    public int deleteUser(int id) {
+        return userDao.deleteUser(id);
     }
 }

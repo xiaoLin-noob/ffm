@@ -29,14 +29,13 @@
         left join user u on b.userId = u.id
         left join payway p on b.paywayid = p.id
         <where>
-            <if test="title != null and title != ''">
+            <if test="title != null and title != '' and title != 'null'">
                 and title like concat('%',#{title},'%')
-
             </if>
             <if test="userId != null and userId != ''">
                 and userId = #{userId}
             </if>
-            <if test="type != null and type != ''">
+            <if test="type != null and type != '' and type !='null'">
                 and type = #{type}
             </if>
         </where>

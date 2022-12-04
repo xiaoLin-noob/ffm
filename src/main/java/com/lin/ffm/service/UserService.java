@@ -1,5 +1,6 @@
 package com.lin.ffm.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lin.ffm.pojo.User;
 
 import java.util.List;
@@ -8,7 +9,7 @@ public interface UserService {
 
     String findUsernameById(int id);
 
-    List<User> findAll();
+    PageInfo<User> findAllUser(User user, Integer pageNum, Integer pageSize);
 
     User login(User user);
 
@@ -17,4 +18,6 @@ public interface UserService {
     int editUser(User user);
 
     int register(User user);
+
+    int deleteUser(int id);
 }

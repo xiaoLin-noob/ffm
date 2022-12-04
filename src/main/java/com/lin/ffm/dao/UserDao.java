@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface UserDao {
 
-    @Select("select * from user")
-    List<User> findAllUser();
+//    @Select("select * from user")
+    List<User> findAllUser(User user);
 
     @Select("select username from user where id")
     String findUsernameById(int id);
@@ -25,7 +25,10 @@ public interface UserDao {
 
     int editUser(User user);
 
-    @Insert("Insert into user (username,password,role,houseId) values (#{username},#{password},#{role},#{houseId})")
+    @Insert("Insert into user (username,password,role,msgId,houseId) values (#{username},#{password},#{role},#{msgId},#{houseId})")
     int register(User user);
+
+    @Delete("delete from user where id = #{id}")
+    int deleteUser(int id);
 
 }

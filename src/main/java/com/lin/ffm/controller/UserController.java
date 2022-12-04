@@ -1,6 +1,8 @@
 package com.lin.ffm.controller;
 
 
+import com.github.pagehelper.PageInfo;
+import com.lin.ffm.pojo.Bill;
 import com.lin.ffm.pojo.Message;
 import com.lin.ffm.service.MessageService;
 import com.lin.ffm.util.MyMD5Util;
@@ -49,8 +51,10 @@ public class UserController {
         }
         if (flag){
             session.setAttribute("USER_SESSION",u);
-            if (u.getRole() .equals("admin")){
-                return "admin/main";
+            if (u.getRole().equals("admin")){
+                return "redirect:/admin";
+            }else if (u.getRole().equals("户主")){
+                return null;
             }
             return "redirect:/dashboard";
         }else {
@@ -120,22 +124,30 @@ public class UserController {
         int result = 0;
         String pwd = null;
         User u = userService.login(user);
+        Message message = new Message();
+        message.setFirstname("暂无信息，点我添加");
+        message.setLastname("暂无信息，点我添加");
+        message.setAddress("暂无信息，点我添加");
+        message.setEmail("暂无信息，点我添加");
+        message.setMsg("暂无信息，点我添加");
+        Message m =messageService.addMessage(message);
         if (u != null) {
-            return "用户已存在";
+            return "用户名已存在，请重新输入";
         } else {
             try {
                 //加密
-                pwd = encryptionPwd(user.getPassword());
+                pwd = encryptionPwd("123");
                 user.setPassword(pwd);
+                user.setMsgId(m.getId());
                 result = userService.register(user);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         if (result>0){
-            return "注册成功";
+            return "添加成功";
         }else {
-            return "注册失败";
+            return "未知原因，添加失败";
         }
     }
 
@@ -149,6 +161,44 @@ public class UserController {
             e.printStackTrace();
         }
         return encryptedPwd;
+    }
+
+    @RequestMapping("/admin")
+    public String admin(User user,Integer pageNum,Integer pageSize,Model model){
+        PageInfo<User> page = userService.findAllUser(user,pageNum,pageSize);
+        model.addAttribute("page",page);
+        model.addAttribute("search",user);
+        return "admin/client";
+    }
+
+    @ResponseBody
+    @RequestMapping("/findUserById")
+    public User findUserById_edit(int id){
+        return userService.findUserById(id);
+    }
+
+    @ResponseBody
+    @RequestMapping("/editUser")
+    public String editUser(User user){
+        int i = userService.editUser(user);
+        if (i>0){
+            return "修改成功！";
+        }else {
+            return "修改失败！";
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/deleteUser")
+    public String deleteUser(int id){
+        User u = userService.findUserById(id);
+        messageService.deleteMessage(u.getMsgId());
+        int i = userService.deleteUser(u.getId());
+        if (i>0){
+            return "操作成功";
+        }else {
+            return "操作失败";
+        }
     }
 
 

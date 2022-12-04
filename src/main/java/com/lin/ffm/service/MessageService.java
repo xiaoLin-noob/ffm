@@ -11,4 +11,6 @@ public interface MessageService {
 
     Message addMessage(Message message);
 
+    void deleteMessage(int id);
+
 }
