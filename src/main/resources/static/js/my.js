@@ -147,3 +147,11 @@ function deleteLoan(id) {
         })
     }
 }
+
+function editImg(file){
+    var url = "editImg";
+    $.get(url, "file=" + file, function (data) {
+        alert(data);
+        window.location.reload();
+    })
+}

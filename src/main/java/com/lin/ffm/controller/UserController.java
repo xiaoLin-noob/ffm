@@ -206,8 +206,8 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("saveAvatar")
-    public String changeImg(@RequestParam("saveAvatar") MultipartFile file, HttpSession session) throws IOException{
+    @RequestMapping("editImg")
+    public String changeImg(@RequestParam("file") MultipartFile file, HttpSession session) throws IOException{
         User u = (User) session.getAttribute("USER_SESSION");
         if (file != null){
             if (Math.floor((double)file.getSize()/1024)>65.0){

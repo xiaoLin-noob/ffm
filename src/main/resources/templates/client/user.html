@@ -24,7 +24,7 @@
 
 
 </head>
-<body>
+<body style="padding-top: 30px;">
 
 
         <div class="content">
@@ -112,10 +112,8 @@
                                                     Your chick she so thirsty <br>
                                                     I'm in that two seat Lambo"
                                 </p>
-                                <form action="saveAvatar" method="POST" enctype="multipart/form-data">
-                                    <input type="file" name="saveAvatar" />
-                                    <button type="submit">更换头像</button>
-                                </form>
+                                <button data-toggle="modal"
+                                    data-target="#editImgModal"> 修改头像</button>
 
                             </div>
                             <hr>
@@ -133,9 +131,38 @@
         </div>
 
 
-</body>
-<script src="/js/my.js" type="text/javascript" th:href="@{/js/my.js}"></script>
+        <!-- 修改头像的模态框 -->
+        <div class="modal fade" id="editImgModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #42d0ed">
+                        <h3>修改头像</h3>
+                    </div>
+                    <form id="editImg">
+                        <div class="modal-body">
+                            <div class="form-group" style="padding: 20px 5px">
+                                <label for="efile" class="col-sm-2 control-label">上传图片</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="efile" name="file" type="file">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-info btn-fill" data-dismiss="modal" aria-hidden="true" onclick="editImg()">保存
+                            </button>
+                            <button class="btn btn-default btn-fill" data-dismiss="modal" aria-hidden="true">关闭</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
+
+
+
+</body>
+
+<script src="/js/my.js" type="text/javascript" th:href="@{/js/my.js}"></script>
 <!--   Core JS Files   -->
 <script src="/js/jquery.3.2.1.min.js" type="text/javascript" th:href="@{/js/jquery.3.2.1.min.js}"></script>
 <script src="/js/bootstrap.min.js" type="text/javascript" th:href="@{/js/bootstrap.min.js}"></script>
