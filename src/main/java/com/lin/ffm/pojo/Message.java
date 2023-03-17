@@ -16,6 +16,7 @@ public class Message {
     private String email;
     private String address;
     private String msg;
+    private byte[] img;
 
     public Integer getId() {
         return id;
@@ -65,6 +66,14 @@ public class Message {
         this.email = email;
     }
 
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -74,6 +83,7 @@ public class Message {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", msg='" + msg + '\'' +
+                ", img='" + img + '\'' +
                 '}';
     }
 }

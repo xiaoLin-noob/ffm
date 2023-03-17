@@ -87,3 +87,10 @@
     background-color: #fff;
     border: 1px solid #ddd;
 }
+.card-out{
+    z-index: 1;
+}
+
+.input-space{
+    z-index: 100;
+}

@@ -14,7 +14,8 @@
         <result column="time" property="time"/>
         <association property="user" javaType="com.lin.ffm.pojo.User">
             <id column="uid" property="id"></id>
-            <result column="username" property="username"></result>
+            <result column="username" property="username"/>
+            <result column="houseId" property="houseId"/>
         </association>
         <association property="payWay" javaType="com.lin.ffm.pojo.PayWay">
             <id column="pid" property="id"></id>
@@ -26,9 +27,11 @@
     <select id="findBills" parameterType="com.lin.ffm.pojo.Bill" resultMap="billResult">
         select b.*,u.id as uid,u.username,p.id as pid,p.payway
         from bill b
-        left join user u on b.userId = u.id
-        left join payway p on b.paywayid = p.id
+        join user u on b.userId = u.id
+        join payway p on b.paywayid = p.id
         <where>
+            <if test="user.houseId != null and user.houseId != ''"></if>
+                and u.houseId = #{user.houseId}
             <if test="title != null and title != '' and title != 'null'">
                 and title like concat('%',#{title},'%')
             </if>
@@ -38,6 +41,7 @@
             <if test="type != null and type != '' and type !='null'">
                 and type = #{type}
             </if>
+
         </where>
     </select>
 

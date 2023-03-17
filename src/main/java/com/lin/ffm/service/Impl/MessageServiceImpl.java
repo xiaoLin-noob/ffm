@@ -35,4 +35,10 @@ public class MessageServiceImpl implements MessageService {
     public void deleteMessage(int id) {
         messageRepository.deleteById(id);
     }
+
+    @Override
+    public int updateImg(int id, byte[] img) {
+        messageRepository.changeImg(id, img);
+        return id;
+    }
 }

@@ -6,7 +6,7 @@ public class User {
     private String username;
     private String password;
     private String role;
-    private String houseId;
+    private int houseId;
     private int msgId;
 
     public int getId() {
@@ -41,11 +41,11 @@ public class User {
         this.role = role;
     }
 
-    public String getHouseId() {
+    public int getHouseId() {
         return houseId;
     }
 
-    public void setHouseId(String houseId) {
+    public void setHouseId(int houseId) {
         this.houseId = houseId;
     }
 

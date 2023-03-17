@@ -13,4 +13,6 @@ public interface MessageService {
 
     void deleteMessage(int id);
 
+    int updateImg(int id, byte[] img);
+
 }

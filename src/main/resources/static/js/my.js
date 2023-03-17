@@ -92,14 +92,58 @@ function changeUser(){
 
 
 function editMessage(){
-    var b = confirm("确定修改吗？");
+    let b = confirm("确定修改吗？");
     if (b){
-        var url = "editMessage";
+        let url = "editMessage";
         $.get(url,$("#editMessage").serialize(),function (data){
             alert(data);
-            window.location.reload();
+            window.location.href = "user";
         })
     }
 }
 
 
+
+function findLoanById_edit(id) {
+    var url = "/findLoanById";
+    $.get(url,"id="+id,function (data) {
+        console.log(data)
+        $("#eid").val(data.id);
+        $("#emoney").val(data.money);
+        $("#ewhere").val(data.where);
+        $("#erates").val(data.rates);
+        $("#eduration").val(data.duration);
+        $("#epayBack").val(data.payBack);
+        $("#emsg").val(data.msg);
+        $("#etime").val(data.time);
+
+    });
+}
+
+function addLoan(){
+    var url = "/addLoan";
+    $.get(url,$("#addLoan").serialize(),function (data){
+        alert(data);
+        window.location.reload();
+    })
+}
+
+function editLoan() {
+    var url = "/editLoan";
+    $.get(url,$("#editLoan").serialize(),function (data){
+        alert(data);
+        window.location.reload();
+    })
+}
+
+
+function deleteLoan(id) {
+    var b = confirm("是否删除该条记录？");
+    if (b) {
+        var url = "deleteLoan";
+        $.get(url, "id=" + id, function (data) {
+            alert(data);
+            window.location.reload();
+        })
+    }
+}

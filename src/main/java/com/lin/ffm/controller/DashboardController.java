@@ -1,18 +1,14 @@
 package com.lin.ffm.controller;
 
-import com.lin.ffm.pojo.Bill;
 import com.lin.ffm.pojo.User;
 import com.lin.ffm.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Controller

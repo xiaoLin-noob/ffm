@@ -1,24 +1,18 @@
 package com.lin.ffm;
 
-import com.github.pagehelper.PageInfo;
-import com.lin.ffm.controller.UserController;
 import com.lin.ffm.dao.BillDao;
+import com.lin.ffm.dao.LoanDao;
 import com.lin.ffm.dao.UserDao;
-import com.lin.ffm.pojo.Bill;
+import com.lin.ffm.pojo.Loan;
 import com.lin.ffm.pojo.Message;
 import com.lin.ffm.repository.MessageRepository;
 import com.lin.ffm.service.BillService;
+import com.lin.ffm.service.LoanService;
 import com.lin.ffm.util.MyMD5Util;
 import com.lin.ffm.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 class FamilyFinancialManagementApplicationTests {
@@ -39,7 +33,7 @@ class FamilyFinancialManagementApplicationTests {
         user.setUsername("lisi");
         user.setPassword("123456");
         user.setRole("user");
-        user.setHouseId("1");
+        user.setHouseId(1);
         try {
             //加密
             encryptedPwd = MyMD5Util.getEncryptedPwd(user.getPassword());
@@ -85,6 +79,19 @@ class FamilyFinancialManagementApplicationTests {
             e.printStackTrace();
         }
         return encryptedPwd;
+    }
+
+    @Autowired
+    LoanService loanService;
+
+    @Autowired
+    LoanDao loanDao;
+
+    @Test
+    public void sqlTest(){
+//        System.out.println(loanService.findLoans(null,1,5));
+        Loan loan = new Loan();
+        System.out.println(loanDao.editLoan(null));
     }
 
 }

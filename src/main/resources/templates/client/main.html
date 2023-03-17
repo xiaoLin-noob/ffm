@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Bootstrap core CSS     -->
+<link href="/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<!-- Animation library for notifications   -->
+<link href="/css/animate.min.css" rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+<!--  Light Bootstrap Table core CSS    -->
+<link href="/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" th:href="@{/css/light-bootstrap-dashboard.css}"/>
+<!--  CSS for Demo Purpose, don't include it in your project     -->
+<link href="/css/demo.css" rel="stylesheet" th:href="@{/css/demo.css}"/>
+<!--     Fonts and icons     -->
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="/css/pe-icon-7-stroke.css" rel="stylesheet" th:href="@{/css/pe-icon-7-stroke.css}"/>
+
+    <script type="text/javascript">
+        function SetIFrameHeight() {
+            var iframeid = document.getElementById("iframe");
+            if (document.getElementById) {
+                /*设置 内容展示区的高度等于页面可视区的高度*/
+                iframeid.height = document.documentElement.clientHeight;
+            }
+        }
+
+        function titleSet(){
+
+        }
+
+        function editPwd(){
+            var pwd = $('#pwd').val();
+            var pwd2 = $('#pwd2').val();
+            var url = "editPassword";
+            if (pwd == pwd2){
+                $.get(url,$("#editPwd").serialize(),function (data){
+                    alert(data);
+                })
+            }else {
+                alert("两次输入的密码不一样,请重新输入");
+            }
+
+        }
+    </script>
+</head>
+<body>
+
+<div th:fragment="side" class="wrapper" style="clear: both ">
+    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+
+
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="/toMain" class="simple-text">
+                    FFM
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li>
+                    <a href="/dashboard" th:target="iframe" target="iframe">
+                        <i class="pe-7s-graph"></i>
+                        <p>分析</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/bill" th:target="iframe" target="iframe">
+                        <i class="pe-7s-note2"></i>
+                        <p>账单</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/loan" th:target="iframe" target="iframe">
+                        <i class="pe-7s-news-paper"></i>
+                        <p>借贷</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="icons.html" th:target="iframe" target="iframe">
+                        <i class="pe-7s-science"></i>
+                        <p>投资</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/user" th:target="iframe" target="iframe">
+                        <i class="pe-7s-user"></i>
+                        <p>个人</p>
+                    </a>
+                </li>
+                <li class="active-pro">
+                    <a href="upgrade.html">
+                        <i class="pe-7s-rocket"></i>
+                        <p>Upgrade to PRO</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-panel">
+        <nav class="navbar navbar-default navbar-fixed">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a id="minTitle" class="navbar-brand" href="#">LOAN</a>
+                </div>
+                <div class="collapse navbar-collapse card-out">
+                    <ul class="nav navbar-nav navbar-left card-out" style="height: 61px">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-dashboard"></i>
+                                <p class="hidden-lg hidden-md">Dashboard</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">
+                                <p>你好</p>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <p th:text="${session.USER_SESSION.getUsername()}">
+                                    Dropdown
+                                    <b class="caret"></b>
+                                </p>
+
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/user" th:target="iframe" target="iframe">个人中心</a></li>
+                                <li><a data-toggle="modal"
+                                       data-target="#editPwdModal">修改密码</a></li>
+                                <li><a href="#">邀请加入</a></li>
+                                <li><a href="#">代办事项</a></li>
+                                <!--                <li><a href="#">Something</a></li>-->
+                                <li class="divider"></li>
+                                <li><a href="/logout">退出账户</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/logout">
+                                <p>退出</p>
+                            </a>
+                        </li>
+                        <li class="separator hidden-lg"></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div style="padding-top: 30px " >
+            <iframe width="100%" id="iframe" name="iframe" onload="SetIFrameHeight()"
+                    frameborder="0" src=""></iframe>
+        </div>
+
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Company
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Portfolio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Blog
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <p class="copyright pull-right">
+                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                </p>
+            </div>
+        </footer>
+
+
+    </div>
+</div>
+
+
+<!-- 修改密码的模态框 -->
+<div class="modal fade" id="editPwdModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #42d0ed">
+                <h3>修改密码</h3>
+            </div>
+            <form id="editPwd">
+                <div class="modal-body">
+                    <table id="addTab" class="table">
+                        <tr>
+                            <td>旧密码:
+                                <input type="password" class="form-control" name="oldPwd" id="oldPwd"></td>
+                        </tr>
+                        <tr>
+                            <td>新密码:<input type="password" class="form-control" name="pwd" id="pwd"></td>
+                        </tr>
+                        <tr>
+                            <td>确认新密码:<input type="password" class="form-control" id="pwd2"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info btn-fill" data-dismiss="modal" aria-hidden="true" onclick="editPwd()">保存
+                    </button>
+                    <button class="btn btn-default btn-fill" data-dismiss="modal" aria-hidden="true">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script src="/js/my.js" type="text/javascript" th:href="@{/js/my.js}"></script>
+<!--   Core JS Files   -->
+<script src="/js/jquery.3.2.1.min.js" type="text/javascript" th:href="@{/js/jquery.3.2.1.min.js}"></script>
+<script src="/js/bootstrap.min.js" type="text/javascript" th:href="@{/js/bootstrap.min.js}"></script>
+<!--  Notifications Plugin    -->
+<script src="/js/bootstrap-notify.js" th:href="@{/js/bootstrap-notify.js}"></script>
+<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+<script src="/js/light-bootstrap-dashboard.js?v=1.4.0" th:href="@{/js/light-bootstrap-dashboard.js}"></script>
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+</html>

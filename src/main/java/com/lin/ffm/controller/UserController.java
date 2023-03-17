@@ -11,12 +11,16 @@ import com.lin.ffm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 @Controller
 public class UserController {
@@ -56,7 +60,7 @@ public class UserController {
             }else if (u.getRole().equals("户主")){
                 return null;
             }
-            return "redirect:/dashboard";
+            return "client/main";
         }else {
             model.addAttribute("msg","密码错误");
         }
@@ -78,7 +82,7 @@ public class UserController {
         return "client/user";
     }
 
-
+    @ResponseBody
     @RequestMapping("/editMessage")
     public String editMessage(Message msg,HttpSession session){
 //        User user = (User) session.getAttribute("USER_SESSION");
@@ -93,12 +97,12 @@ public class UserController {
 //        } else {
             Message m =messageService.editMessage(msg);
             if (m != null) {
-                //return "修改成功";
-                return "redirect:/user";
+                return "修改成功";
+                //return "redirect:/user";
             }
 //        }
-        //return "失败，请过几分钟后重试。";
-        return "redirect:/user";
+        return "失败，请过几分钟后重试。";
+        //return "redirect:/user";
     }
 
     @ResponseBody
@@ -201,7 +205,25 @@ public class UserController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping("saveAvatar")
+    public String changeImg(@RequestParam("saveAvatar") MultipartFile file, HttpSession session) throws IOException{
+        User u = (User) session.getAttribute("USER_SESSION");
+        if (file != null){
+            if (Math.floor((double)file.getSize()/1024)>65.0){
+                return "文件太大!";
+            }
 
+            InputStream inputStream = file.getInputStream();
+            byte[] bytes = FileCopyUtils.copyToByteArray(inputStream);
 
-
+            int i = messageService.updateImg(u.getMsgId(),bytes);
+            if (i>0){
+                return "上传成功!";
+            }else {
+                return "上传失败!";
+            }
+        }
+        return "未上传文件";
+    }
 }

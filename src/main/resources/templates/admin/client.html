@@ -20,11 +20,10 @@
   <link href="/css/demo.css" rel="stylesheet" th:href="@{/css/demo.css}"/>
   <!--     Fonts and icons     -->
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
   <link href="/css/pe-icon-7-stroke.css" rel="stylesheet" th:href="@{/css/pe-icon-7-stroke.css}"/>
 
-  <script type="text/javascript">
-    function showSearch (){
+  <script type="text/javascript" rel="script">
+    function showSearch_user (){
       var show = document.getElementById("search_user").style.display;
       if (show == "none"){
         document.getElementById("search_user").style.display="inline-block";
@@ -92,13 +91,13 @@
                 <p class="hidden-lg hidden-md">Dashboard</p>
               </a>
             </li>
-            <li>
-              <a onclick="showSearch()">
+            <li class="card-out">
+              <a class="input-space" onclick="showSearch_user()">
                 <i class="fa fa-search"></i>
                 <p class="hidden-lg hidden-md">Search</p>
               </a>
             </li>
-            <li id="search_user" style="display: none;height: 58px;line-height: 58px;" >
+            <li id="search_user" style="display: block;height: 58px;line-height: 58px;" >
               <form action="/admin" style="border-radius: 8px 8px 0px 0px">
                 <input style="border: none;" name="username" placeholder="输入想要搜索的内容">
                 <select class="select" name="role">
@@ -354,8 +353,6 @@
 <script src="/js/bootstrap.min.js" type="text/javascript" th:href="@{/js/bootstrap.min.js}"></script>
 <!--  Notifications Plugin    -->
 <script src="/js/bootstrap-notify.js" th:href="@{/js/bootstrap-notify.js}"></script>
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 <script src="/js/light-bootstrap-dashboard.js?v=1.4.0" th:href="@{/js/light-bootstrap-dashboard.js}"></script>
 <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
