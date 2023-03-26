@@ -49,4 +49,9 @@ public class LoanServiceImpl implements LoanService {
     public int deleteLoan(int id) {
         return loanDao.deleteLoan(id);
     }
+
+    @Override
+    public Double LoanYear(int id, int year, int month) {
+        return loanDao.LoanYear(id, year, month);
+    }
 }

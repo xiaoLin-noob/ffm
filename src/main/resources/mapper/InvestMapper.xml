@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lin.ffm.dao.InvestDao">
+    <resultMap id="InvestMap" type="com.lin.ffm.pojo.Invest">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="money" property="money"/>
+        <result column="rate" property="rate"/>
+        <result column="startDate" property="startDate"/>
+        <result column="endDate" property="endDate"/>
+        <result column="income" property="income"/>
+        <result column="msg" property="msg"/>
+        <association property="user" javaType="com.lin.ffm.pojo.User">
+            <id column="uid" property="id"/>
+            <result column="username" property="username"/>
+            <result column="houseId" property="houseId"/>
+        </association>
+    </resultMap>
+
+    <select id="findInvests" resultMap="InvestMap">
+        select  * from invest i join user u on i.userId = u.id
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="name != null and name != ''">
+                or msg like concat('%',#{name},'%')
+            </if>
+            <if test="name != null and name != ''">
+                or u.username like concat('%',#{name},'%')
+            </if>
+            <if test="money != null and money != ''">
+                or money = #{name}
+            </if>
+            <if test="user.houseId != null">
+                and u.houseId = #{user.houseId}
+            </if>
+            <if test="userId != null and userId != ''">
+                and userId = #{userId}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="editInvest" parameterType="com.lin.ffm.pojo.Invest">
+        update invest
+        <set>
+            <if test="name != null and name != ''">
+                ,name=#{name}
+            </if>
+            <if test="money != null and money != ''">
+                ,money=#{money}
+            </if>
+            <if test="rate != null and rate != ''">
+                ,rate=#{rate}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                ,startDate=#{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                ,endDate=#{endDate}
+            </if>
+            <if test="income != null and income != ''">
+                ,income=#{income}
+            </if>
+            <if test="msg != null and msg != ''">
+                ,msg=#{msg}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+</mapper>

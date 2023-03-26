@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -45,7 +46,7 @@ public class UserController {
         boolean flag = false;
         if (u != null){
             try {
-                flag = MyMD5Util.validPassword(user.getPassword(),u.getPassword());
+                flag = MyMD5Util.validPassword(user.getPassword(),u.getPassword());//进行密码检验
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -56,9 +57,7 @@ public class UserController {
         if (flag){
             session.setAttribute("USER_SESSION",u);
             if (u.getRole().equals("admin")){
-                return "redirect:/admin";
-            }else if (u.getRole().equals("户主")){
-                return null;
+                return "admin/client";
             }
             return "client/main";
         }else {
@@ -226,4 +225,14 @@ public class UserController {
         }
         return "未上传文件";
     }
+
+
+    @RequestMapping("/notHome")
+    @ResponseBody
+    public List<User> findNotHomeUsers(){
+        User u = new User();
+        u.setHouseId(0);
+        return userService.findUsers(u);
+    }
+
 }

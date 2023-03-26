@@ -25,6 +25,21 @@
 </head>
 <body style="padding-top: 30px;">
 
+
+<div class="text-center">
+  <form action="/bill">
+    <input name="title"/>
+    <input name="me" type="checkbox" value="true">只看我</input>
+    <select name="type">
+      <option value="">全部</option>
+      <option value="0">收入</option>
+      <option value="1">支出</option>
+    </select>
+    <input type="submit"/>
+  </form>
+</div>
+
+
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -32,6 +47,7 @@
         <div class="card">
           <div class="header clearfix">
             <h4 class="title pull-left">个人账单</h4>
+
             <button type="button" class="btn btn-info btn-fill pull-right" title="新建" data-toggle="modal"
                     data-target="#addModal"> 新增
             </button>
@@ -97,45 +113,52 @@
       <div class="modal-header" style="background: #42d0ed">
         <h3>添加账单</h3>
       </div>
-      <form id="addBill">
         <div class="modal-body">
-          <!--图书的id,不展示在页面-->
-          <table id="addTab" class="table">
-            <tr>
-              <td>标题:
-                <input class="form-control" name="title" id="atitle"></td>
-            </tr>
-            <tr>
-              <td>金额:<input class="form-control" name="money" id="amoney"></td>
-            </tr>
-            <tr>
-              <td style="height: 30px">类型:
-                <label style="line-height: 55px;margin-left: 50px"><input type="radio"  name="type" value="1" checked> 支出</label>
-                <label style="line-height: 55px;margin-left: 50px;"><input type="radio"  name="type" value="0"> 收入</label>
-              </td>
-            </tr>
-            <tr>
-              <td>支付方式:
-                <select class="form-control" name="payWayId">
+          <form id="addBill" class="form-horizontal">
+            <div class="form-group">
+              <label for="atitle" class="col-sm-2 control-label">标题</label>
+              <div class="col-sm-10">
+                <input class="form-control" id="atitle" name="title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="amoney" class="col-sm-2 control-label">金额</label>
+              <div class="col-sm-10">
+                <input class="form-control" id="amoney" name="money">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="atype" class="col-sm-2 control-label">类型</label>
+              <div class="col-sm-10">
+                <input type="radio" id="atype" name="type" value="1" checked> 支出</label>
+                <input type="radio"  name="type" value="0"> 收入</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="apay" class="col-sm-2 control-label">支付方式</label>
+              <div class="col-sm-10">
+                <select id="apay" class="form-control" name="payWayId">
                   <option value="1">现金</option>
                   <option value="2">支付宝</option>
                   <option value="3">微信</option>
                   <option value="4">银行卡</option>
                   <option value="5">其他</option>
                 </select>
-              </td>
-            </tr>
-            <tr>
-              <td>时间:<input class="form-control" type="date" name="time" id="atime"></td>
-            </tr>
-          </table>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="atime" class="col-sm-2 control-label">时间</label>
+              <div class="col-sm-10">
+                <input class="form-control" id="atime" name="time" type="date">
+              </div>
+            </div>
+      </form>
         </div>
         <div class="modal-footer">
           <button class="btn btn-info btn-fill" data-dismiss="modal" aria-hidden="true" onclick="addBill()">保存
           </button>
           <button class="btn btn-default btn-fill" data-dismiss="modal" aria-hidden="true">关闭</button>
         </div>
-      </form>
     </div>
   </div>
 </div>
@@ -155,48 +178,55 @@
       <div class="modal-header">
         <h3>修改账单</h3>
       </div>
-      <form id="editBill">
         <div class="modal-body">
+          <form id="editBill" class="form-horizontal">
           <!--id,不展示在页面-->
           <span><input type="hidden" id="eid" name="id"></span>
-          <table id="editTab" class="table table-bordered table-striped">
-            <tr>
-              <td>标题:
-                <input class="form-control" name="title" id="etitle"></td>
-            </tr>
-            <tr>
-              <input type="hidden" id="euserId" name="userId">
-              <td>金额:<input class="form-control" name="money" id="emoney"></td>
-             </tr>
-            <tr>
-              <td>
-                类型:
-                <label><input type="radio" name="type" value="1" checked> 支出</label>
-                <label><input type="radio" name="type" value="0"> 收入</label>
-              </td>
-            </tr>
-              <tr>
-                <td>支付方式:
-                <select class="form-control" name="payWayId">
-                  <option value="1">现金</option>
-                  <option value="2">支付宝</option>
-                  <option value="3">微信</option>
-                  <option value="4">银行卡</option>
-                  <option value="5">其他</option>
-                </select>
-                </td>
-              </tr>
-            <tr>
-              <td>时间:<input class="form-control" type="date" name="time" id="etime"></td>
-            </tr>
-          </table>
+          <div class="form-group">
+            <label for="etitle" class="col-sm-2 control-label">标题</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="etitle" name="title">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="emoney" class="col-sm-2 control-label">金额</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="emoney" name="money">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="etype" class="col-sm-2 control-label">类型</label>
+            <div class="col-sm-10">
+              <input type="radio" id="etype" name="type" value="1"> 支出</label>
+              <input type="radio"  name="type" value="0"> 收入</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="epay" class="col-sm-2 control-label">支付方式</label>
+            <div class="col-sm-10">
+              <select id="epay" class="form-control" name="payWayId">
+                <option value="1">现金</option>
+                <option value="2">支付宝</option>
+                <option value="3">微信</option>
+                <option value="4">银行卡</option>
+                <option value="5">其他</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="etime" class="col-sm-2 control-label">时间</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="etime" name="time" type="date" required="required">
+            </div>
+          </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button class="btn btn-success btn-fill" data-dismiss="modal" aria-hidden="true" onclick="editBill()">保存
           </button>
           <button class="btn btn-default btn-fill" data-dismiss="modal" aria-hidden="true">关闭</button>
         </div>
-      </form>
+
     </div>
   </div>
 </div>

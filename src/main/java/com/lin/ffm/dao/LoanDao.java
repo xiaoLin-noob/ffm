@@ -21,8 +21,13 @@ public interface LoanDao {
     @Delete("delete from loan where id = #{id}")
     int deleteLoan(int id);
 
-    @Insert("INSERT INTO loan (userId,money,loan.where,rates,duration,payBack,msg,time) VALUES (#{userId},#{money},#{where},#{rates},#{duration},#{payBack},#{msg},#{time})")
+    @Insert("INSERT INTO loan (userId,money,loan.where,rates,startDate,endDate,payBack,msg,status) VALUES (#{userId},#{money},#{where},#{rates},#{startDate},#{endDate},#{msg},#{payBack},#{status})")
     int addLoan(Loan loan);
 
     int editLoan(Loan loan);
+
+    @Select("select sum(case month(startDate) when #{month} then money else 0 end) as #{month}月\n" +
+            "from loan where userId = #{id}\n" +
+            "and year(startDate)=#{year}")
+    Double LoanYear(int id,int year,int month);
 }

@@ -23,7 +23,13 @@ public class BillController {
     @RequestMapping("bill")
     public String Bill( Bill bill,Boolean me,Model model,Integer pageNum,Integer pageSize, HttpSession session){
         User u = (User) session.getAttribute("USER_SESSION");
-        if (false){
+        if (me == null){
+            me = false;
+        }
+        if (me){
+            bill.setUserId(u.getId());
+        }
+        if (u.getHouseId() == 0){
             bill.setUserId(u.getId());
         }
         bill.setUser(u);

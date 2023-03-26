@@ -86,11 +86,11 @@
                                                         name: '支出'
                                                     },
                                                     {
-                                                        value: 0,
+                                                        value: [[${monthLoan}]],
                                                         name: '贷款'
                                                     },
                                                     {
-                                                        value: 0,
+                                                        value: [[${monthInvest}]],
                                                         name: '投资'
                                                     }
                                                 ]
@@ -219,25 +219,25 @@
                                 {
                                 name: '支出',
                                 type: 'bar',
-                                data: [[${byout}]],
+                                data: [[${billOfYearOut}]],
                                     color: '#FF9500'
                                 },
                                     {
                                         name: '收入',
                                         type: 'bar',
-                                        data: [[${byin}]],
+                                        data: [[${billOfYearIn}]],
                                         color:'#87CB16'
                                     },
                                     {
                                         name: '贷款',
                                         type: 'bar',
-                                        data: 0,
+                                        data: [[${lianOfYear}]],
                                         color:'#FF4A55'
                                     }
                                     ,{
                                         name: '投资',
                                         type: 'bar',
-                                        data: 0,
+                                        data: [[${investOfYear}]],
                                         color:'#1DC7EA'
                                     }
                                 ]

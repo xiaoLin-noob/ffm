@@ -11,6 +11,10 @@ public interface UserService {
 
     PageInfo<User> findAllUser(User user, Integer pageNum, Integer pageSize);
 
+    List<User> findFamily(User user);
+
+    int changeHouseId(User user);
+
     User login(User user);
 
     User findUserById(int id);
@@ -20,4 +24,6 @@ public interface UserService {
     int register(User user);
 
     int deleteUser(int id);
+
+    List<User> findUsers(User user);
 }

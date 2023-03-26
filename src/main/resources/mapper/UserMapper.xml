@@ -21,6 +21,9 @@
             <if test=" houseId != null and houseId != ''">
                 ,houseId=#{houseId}
             </if>
+            <if test=" status != null and status != ''">
+                ,status=#{status}
+            </if>
             <where>
                 id = #{id}
             </where>
@@ -36,7 +39,7 @@
             <if test=" role != null and role != '' and role != 'null'">
                 and role=#{role}
             </if>
-            <if test=" houseId != null and houseId != '' and houseId != 'null'">
+            <if test=" houseId != null">
                 and houseId=#{houseId}
             </if>
         </where>

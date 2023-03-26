@@ -5,12 +5,15 @@ import com.github.pagehelper.PageInfo;
 import com.lin.ffm.pojo.Loan;
 import com.lin.ffm.pojo.User;
 import com.lin.ffm.service.LoanService;
+import com.lin.ffm.util.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
+import java.util.regex.Pattern;
 
 @Controller
 public class LoanController {
@@ -20,9 +23,16 @@ public class LoanController {
 
 
     @RequestMapping("loan")
-    public String loan(Loan loan, Model model, Integer pageNum, Integer pageSize, HttpSession session){
+    public String loan(Loan loan,boolean me, Model model, Integer pageNum, Integer pageSize, HttpSession session){
+        if (Tool.isNumber(loan.getWhere())){
+            loan.setMoney(Double.parseDouble(loan.getWhere()));
+        }
+
         User u = (User) session.getAttribute("USER_SESSION");
-        loan.setUserId(u.getId());
+        loan.setUser(u);
+        if (me){
+            loan.setUserId(u.getId());
+        }
         PageInfo<Loan> page = loanService.findLoans(loan,pageNum,pageSize);
         model.addAttribute("page",page);
         model.addAttribute("search",loan);
@@ -69,4 +79,8 @@ public class LoanController {
             return "添加失败！";
         }
     }
+
+
+    //计算贷款每个月的利息，公式为：(贷款本金 x 年利率) / 12
+    //计算预期还款总额，公式为：每个月应还总额 x 还款期数
 }

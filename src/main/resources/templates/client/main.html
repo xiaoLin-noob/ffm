@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
 <!-- Bootstrap core CSS     -->
 <link href="/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
@@ -18,12 +18,20 @@
             var iframeid = document.getElementById("iframe");
             if (document.getElementById) {
                 /*设置 内容展示区的高度等于页面可视区的高度*/
-                iframeid.height = document.documentElement.clientHeight;
+                iframeid.height = document.documentElement.clientHeight * 0.9;
             }
         }
 
-        function titleSet(){
-
+        function setTitle(){
+            var items = document.getElementsByTagName("a");
+            for (var i = 0;i<items.length;i++){
+                var obj = items[i];
+                if (obj.type == "button"){
+                    if (obj == window.event.srcElement){
+                        document.getElementById("minTitle").innerHTML=obj.href.toString();
+                    }
+                }
+            }
         }
 
         function editPwd(){
@@ -37,8 +45,160 @@
             }else {
                 alert("两次输入的密码不一样,请重新输入");
             }
+        }
+
+        function InviteUser(id){
+            var url = "inviteUser";
+            var b = confirm("确定邀请该用户吗？用户进入家庭组后可查看其它成员的账单信息")
+            if (b){
+                $.get(url, "id=" + id, function (data) {
+                    alert(data);
+                })
+            }
+        }
+
+         function getNotHome(){
+             var a = '[[${session.USER_SESSION.getHouseId()}]]';
+             if (a>0){
+            $.ajax({
+                type:"GET",
+                url:"http://localhost:8080/notHome",
+                dataType:"json",
+                success:function (data){
+                    var out = "";
+                    for (var i=0;i<data.length;i++){
+                        // out += '<div class="form-group">'+
+                        //     '<input type="hidden" disabled name="id" value="'+data[i].id+'">' +
+                        //     '<label for="iname" class="col-sm-2 control-label">用户名:</label>' +
+                        //     '<div class="col-sm-6">' +
+                        //     '<input class="form-control" disabled id="iname" value="'+data[i].username+'"></div>'+
+                        //     '<button class="btn btn-default" onclick="InviteUser('+data[i].id+');">邀请加入</button>'+
+                        //     '</div>'
+                        out +='<tr>' +
+                            '<th>'+data[i].id+'</th>' +
+                            '<td>'+data[i].username+'</td>' +
+                            '<td><button class="btn btn-sm btn-default" onclick="InviteUser('+data[i].id+');">邀请加入</button></td>' +
+                            '</tr>';
+                    }
+                    document.getElementById("InviteBox").innerHTML=out;
+                },
+                error:function (){
+                    alert('获取消息失败，请重试');
+                }
+            });
+             }else {
+                 document.getElementById("InviteBox").innerHTML='<h1 class="text-center" style="color: red">请先加入家庭组!</h1>';
+             }
 
         }
+
+        function findFamily(){
+            var a = '[[${session.USER_SESSION.getHouseId()}]]';
+            if (a>0){
+            $.ajax({
+                type:"GET",
+                url:"http://localhost:8080/findFamily",
+                dataType:"json",
+                success:function (data){
+                    var out = "";
+                    for (var i=0;i<data.length;i++){
+                        out += '<dt>用户名:</dt>'+ '<dd>'+data[i].username+'</dd>'
+                        ;
+                    }
+                    out+='<button style="width: 100%" onclick="outFamily()" class="btn btn-danger btn-fill">退出当前家庭组</button>';
+                    document.getElementById("familyBox").innerHTML=out;
+                },
+                error:function (){
+                    alert('获取消息失败，请重试');
+                }
+            });
+            }else
+                document.getElementById("familyBox").innerHTML='<h1 class="text-center" style="color: red">请先加入家庭组!</h1>';
+        }
+
+        function outFamily() {
+            var  b = confirm("确定要退出当前家庭组吗？");
+            if (b){
+                b = confirm("该操作不可逆，是否确定");
+                if (b){
+                    $.get("/outFamily", function (data) {
+                        alert(data);
+                        window.location.href="/logout";
+                    })
+                }
+            }
+        }
+
+        function readItem(id){
+            $.get("/readItem","id="+id, function (data) {
+                document.getElementById('item_username').innerHTML="发件人："+data[0].username;
+                document.getElementById('item_msg').innerHTML="正文"+data[0].msg;
+                document.getElementById('item_time').innerHTML="时间"+data[0].time;
+                document.getElementById('item_id').value=data[0].id;
+            })
+        }
+
+        function allItem(){
+            $.ajax({
+                type:"GET",
+                url:"http://localhost:8080/allItem",
+                dataType:"json",
+                success:function (data){
+                    var out = "";
+                    if (data == null){
+                        out+='<h1 class="text-center"> 暂无消息 </h1>';
+                    }else {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].isRead==0){
+                                out += '<tr style="font-weight: bolder" class="text-center text-primary" data-toggle="modal" data-target="#itemCheckModal" href="#" onclick="readItem('+data[i].id+')">' +
+                                    '<td>' + (i+1) + '</td>' +
+                                    '<td>' + data[i].username + '</td>' +
+                                    '<td>' + data[i].msg + '</td>' +
+                                    '<td>' + data[i].time + '</td></tr>'
+
+                                ;
+                            }else {
+                                out += '<tr style="color: grey" class="text-center" data-toggle="modal" data-target="#itemCheckModal" href="#" onclick="readItem('+data[i].id+')">' +
+                                    '<td>' + (i+1) + '</td>' +
+                                    '<td>' + data[i].username + '</td>' +
+                                    '<td>' + data[i].msg + '</td>' +
+                                    '<td>' + data[i].time + '</td></tr>'
+
+                                ;
+                            }
+                        }
+                    }
+                    document.getElementById("itemBox").innerHTML=out;
+                },
+                error:function (){
+                    alert('获取消息失败，请重试');
+                }
+            });
+        }
+
+        function joinFamily(){
+            var a = '[[${session.USER_SESSION.getHouseId()}]]';
+            var url = "/joinFamily";
+            var id = document.getElementById("item_id").value;
+            var b = true;
+            if (a>0) {
+                 b=confirm("您当前已在其他家庭组,需要退出当前家庭组加入其他家庭组吗？")
+            }
+            if (b){
+                $.get(url,"id="+id,function (date){
+                    if (date === "success"){
+                        alert("加入成功!请重新登录");
+                        window.location.href="/logout";
+                    }else {
+                        alert(date);
+                    }
+
+
+
+                })
+            }
+        }
+
     </script>
 </head>
 <body>
@@ -49,44 +209,44 @@
 
         <div class="sidebar-wrapper">
             <div class="logo">
-                <a href="/toMain" class="simple-text">
+                <a href="" class="simple-text">
                     FFM
                 </a>
             </div>
 
             <ul class="nav">
                 <li>
-                    <a href="/dashboard" th:target="iframe" target="iframe">
+                    <a href="/dashboard" type="button" th:target="iframe" target="iframe">
                         <i class="pe-7s-graph"></i>
                         <p>分析</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/bill" th:target="iframe" target="iframe">
+                    <a href="/bill" type="button"  th:target="iframe" target="iframe">
                         <i class="pe-7s-note2"></i>
                         <p>账单</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/loan" th:target="iframe" target="iframe">
+                    <a href="/loan" type="button"  th:target="iframe" target="iframe">
                         <i class="pe-7s-news-paper"></i>
                         <p>借贷</p>
                     </a>
                 </li>
                 <li>
-                    <a href="icons.html" th:target="iframe" target="iframe">
+                    <a href="/invest" type="button"  th:target="iframe" target="iframe">
                         <i class="pe-7s-science"></i>
                         <p>投资</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/user" th:target="iframe" target="iframe">
+                    <a href="/user" type="button"  th:target="iframe" target="iframe" >
                         <i class="pe-7s-user"></i>
                         <p>个人</p>
                     </a>
                 </li>
                 <li class="active-pro">
-                    <a href="upgrade.html">
+                    <a href="#">
                         <i class="pe-7s-rocket"></i>
                         <p>Upgrade to PRO</p>
                     </a>
@@ -135,9 +295,12 @@
                                 <li><a href="/user" th:target="iframe" target="iframe">个人中心</a></li>
                                 <li><a data-toggle="modal"
                                        data-target="#editPwdModal">修改密码</a></li>
-                                <li><a href="#">邀请加入</a></li>
-                                <li><a href="#">代办事项</a></li>
-                                <li><a href="#">家庭信息</a></li>
+                                <li ><a data-toggle="modal"
+                                       data-target="#InviteModal" href="javascript:void(0);" onclick="getNotHome()">邀请加入</a></li>
+                                <li><a data-toggle="modal"
+                                       data-target="#itemModal" href="javascript:void(0);" onclick="allItem()">代办事项</a></li>
+                                <li><a data-toggle="modal"
+                                       data-target="#familyModal" href="javascript:void(0);" onclick="findFamily();">家庭信息</a></li>
                                 <li class="divider"></li>
                                 <li><a href="/logout">退出账户</a></li>
                             </ul>
@@ -197,6 +360,7 @@
 </div>
 
 
+
 <!-- 修改密码的模态框 -->
 <div class="modal fade" id="editPwdModal" tabindex="-1">
     <div class="modal-dialog">
@@ -204,20 +368,26 @@
             <div class="modal-header" style="background: #42d0ed">
                 <h3>修改密码</h3>
             </div>
-            <form id="editPwd">
+            <form id="editPwd" class="form-horizontal">
                 <div class="modal-body">
-                    <table id="addTab" class="table">
-                        <tr>
-                            <td>旧密码:
-                                <input type="password" class="form-control" name="oldPwd" id="oldPwd"></td>
-                        </tr>
-                        <tr>
-                            <td>新密码:<input type="password" class="form-control" name="pwd" id="pwd"></td>
-                        </tr>
-                        <tr>
-                            <td>确认新密码:<input type="password" class="form-control" id="pwd2"></td>
-                        </tr>
-                    </table>
+                    <div class="form-group">
+                        <label for="oldPwd" class="col-sm-2 control-label">旧密码</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="password" id="oldPwd" name="oldPwd">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd" class="col-sm-2 control-label">新密码</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="password"  id="pwd" name="pwd">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd2" class="col-sm-2 control-label">确认密码</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="pwd2" type="password">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-info btn-fill" data-dismiss="modal" aria-hidden="true" onclick="editPwd()">保存
@@ -228,6 +398,98 @@
         </div>
     </div>
 </div>
+</body>
+
+
+
+
+<!-- 邀请用户的模态框 -->
+<div class="modal fade" id="InviteModal" tabindex="-1">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>邀请新成员加入家庭</h3>
+            </div>
+            <table style="padding: 10px" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>用户名</th>
+                        <th>邀请</th>
+                    </tr>
+                </thead>
+                <tbody id="InviteBox">
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- 家庭成员的模态框 -->
+<div class="modal fade" id="familyModal" tabindex="-1">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>当前家庭组成员</h3>
+            </div>
+            <dl  class="dl-horizontal" id="familyBox" style="padding-top: 10px">
+
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- 消息列表的模态框 -->
+<div class="modal fade" id="itemModal" tabindex="-1" >
+    <div class="modal-dialog" style="width: 80%">
+        <div class="modal-content" style="width: 100%;margin: 20px">
+            <div class="modal-header">
+                <h3>消息列表</h3>
+            </div>
+            <table class="table table-hover text-center">
+                <thead>
+                <tr class="text-center">
+                    <th class="text-center">id</th>
+                    <th class="text-center">发件人</th>
+                    <th class="text-center">消息</th>
+                    <th class="text-center">时间</th>
+                </tr>
+                </thead>
+                <tbody id="itemBox">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 查看信息模态框 -->
+<div class="modal fade" id="itemCheckModal" tabindex="-1">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>信息详情</h3>
+            </div>
+            <address>
+                <h1 id="item_username">Twitter, Inc.</h1><br>
+                <h2 id="item_msg"></h2><br>
+                <h3 id="item_time"></h3>
+
+            </address>
+            <div>
+                <input type="hidden" value="" id="item_id">
+            <button onclick="joinFamily()" style="width: 100%" class="btn btn-primary btn-fill">接受邀请</button></div>
+        </div>
+    </div>
+</div>
+
 </body>
 
 

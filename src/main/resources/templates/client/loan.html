@@ -27,6 +27,24 @@
 <body style="padding-top: 30px;">
 
 
+<div class="text-center">
+  <form action="/loan" class="form-horizontal">
+    <span>
+     <input name="where"  placeholder="输入需要搜索的内容"/>
+<!--      <input  name="msg" placeholder="输入需要搜索的备注"/>-->
+    <input type="checkbox" value="true"  id="me" name="me"> 只看我</input>
+      <select class="form-select-button" name="status">
+        <option value="">全部</option>
+        <option value="0">未还款</option>
+        <option value="1">已还款</option>
+        <option value="2">已逾期</option>
+        <option value="3">全部还清</option>
+      </select>
+    <button type="submit" class="btn active btn-success btn-fill">搜索</button>
+  </span>
+  </form>
+</div>
+
 
     <div class="content">
       <div class="container-fluid">
@@ -47,10 +65,11 @@
                     <th style="text-align: center">金额</th>
                     <th style="text-align: center">去向</th>
                     <th style="text-align: center">利率</th>
-                    <th style="text-align: center">期限</th>
+                    <th style="text-align: center">开始时间</th>
+                    <th style="text-align: center">结束时间</th>
                     <th style="text-align: center">应还</th>
                     <th style="text-align: center">备注</th>
-                    <th style="text-align: center">时间</th>
+                    <th style="text-align: center">状态</th>
                   </thead>
                   <tbody style="text-align: center">
                   <tr th:each="loan:${page.list}">
@@ -59,10 +78,14 @@
                     <td>[[${loan.money}]]</td>
                     <td>[[${loan.where}]]</td>
                     <td>[[${loan.rates}]]</td>
-                    <td>[[${loan.duration}]]</td>
+                    <td>[[${loan.startDate}]]</td>
+                    <td>[[${loan.endDate}]]</td>
                     <td>[[${loan.payBack}]]</td>
                     <td>[[${loan.msg}]]</td>
-                    <td>[[${loan.time}]]</td>
+                    <td th:if="${loan.status} eq 0">未还款</td>
+                    <td th:if="${loan.status} eq 1">已还款</td>
+                    <td th:if="${loan.status} eq 2">逾期</td>
+                    <td th:if="${loan.status} eq 3">全部还清</td>
                     <td th:if="${loan.user.username} eq ${session.USER_SESSION.getUsername()}">
                       <button type="button" class="btn btn-warning btn-fill" data-toggle="modal"
                               data-target="#editModal" th:onclick="'javascript:findLoanById_edit('+${loan.id}+');'">修改</button>
@@ -84,7 +107,7 @@
       <div id="pagination" style="display: block" class="pagination">
         <ul class="pagination" style="margin-left: 45%">
           <li th:each="i:${#numbers.sequence(1,page.pages)}" >
-            <a th:href="'/loan?&pageNum='+${i}" th:text="${i}"></a>
+            <a th:href="'/loan?where='+${search.where}+'&status='+${search.status}+'&pageNum='+${i}" th:text="${i}"></a>
           </li>
         </ul>
       </div>
@@ -122,9 +145,15 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="aduration" class="col-sm-2 control-label">期限</label>
+            <label for="astart" class="col-sm-2 control-label">开始时间</label>
             <div class="col-sm-10">
-              <input class="form-control" id="aduration" name="duration">
+              <input class="form-control" id="astart" type="date" name="startDate">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="aend" class="col-sm-2 control-label">时间</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="aend" name="endDate" type="date">
             </div>
           </div>
           <div class="form-group">
@@ -140,9 +169,14 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="atime" class="col-sm-2 control-label">时间</label>
+            <label for="astatus" class="col-sm-2 control-label">状态</label>
             <div class="col-sm-10">
-              <input class="form-control" id="atime" name="time" type="date">
+              <select id="astatus" class="form-control" name="status">
+                <option value="0">未还款</option>
+                <option value="1">已还款</option>
+                <option value="2">已逾期</option>
+                <option value="3">全部还清</option>
+              </select>
             </div>
           </div>
         </div>
@@ -196,11 +230,17 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="eduration" class="col-sm-2 control-label">期限</label>
+              <label for="estart" class="col-sm-2 control-label">开始时间</label>
               <div class="col-sm-10">
-                <input class="form-control" id="eduration" name="duration">
+                <input class="form-control" id="estart" name="startDate" required="required" type="date">
               </div>
             </div>
+          <div class="form-group">
+            <label for="eend" class="col-sm-2 control-label">结束时间</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="eend" name="endDate" required="required" type="date">
+            </div>
+          </div>
             <div class="form-group">
               <label for="epayBack" class="col-sm-2 control-label">应还</label>
               <div class="col-sm-10">
@@ -213,12 +253,17 @@
                 <input class="form-control" id="emsg" name="msg">
               </div>
             </div>
-            <div class="form-group">
-              <label for="etime" class="col-sm-2 control-label">时间</label>
-              <div class="col-sm-10">
-                <input class="form-control" id="etime" name="time" type="date">
-              </div>
+          <div class="form-group">
+            <label for="estatus" class="col-sm-2 control-label">状态</label>
+            <div class="col-sm-10">
+              <select id="estatus" class="form-control" name="status">
+                <option value="0">未还款</option>
+                <option value="1">已还款</option>
+                <option value="2">已逾期</option>
+                <option value="3">全部还清</option>
+              </select>
             </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-success btn-fill" data-dismiss="modal" aria-hidden="true" onclick="editLoan()">保存
@@ -233,9 +278,7 @@
 
 </body>
 
-<script type="text/javascript" th:inline="javascript">
 
-</script>
 <script src="/js/my.js" type="text/javascript" th:href="@{/js/my.js}"></script>
 
 <!--   Core JS Files   -->

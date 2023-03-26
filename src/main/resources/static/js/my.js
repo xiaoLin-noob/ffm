@@ -1,12 +1,15 @@
 function findBillById_edit(id) {
     var url = "/findBillById";
     $.get(url,"id="+id,function (data) {
-        console.log(data)
+        $("#epay").val(data.payWayId);
         $("#eid").val(data.id);
         $("#etitle").val(data.title);
         $("#euserId").val(data.userId);
         $("#emoney").val(data.money);
-        $("#etype").val(data.type);
+        $("#etime").val(data.time);
+        // $("#etype").val(data.type);
+        $("input[name=type][value='0']").attr("checked",data.type == 0 ? true : false);
+        $("input[name=type][value='1']").attr("checked",data.type == 1 ? true : false);
     });
 }
 
@@ -107,16 +110,15 @@ function editMessage(){
 function findLoanById_edit(id) {
     var url = "/findLoanById";
     $.get(url,"id="+id,function (data) {
-        console.log(data)
         $("#eid").val(data.id);
         $("#emoney").val(data.money);
         $("#ewhere").val(data.where);
         $("#erates").val(data.rates);
-        $("#eduration").val(data.duration);
+        $("#estart").val(data.startDate);
+        $("#eend").val(data.endDate);
         $("#epayBack").val(data.payBack);
         $("#emsg").val(data.msg);
-        $("#etime").val(data.time);
-
+        $("#estatus").val(data.status);
     });
 }
 
@@ -154,4 +156,53 @@ function editImg(file){
         alert(data);
         window.location.reload();
     })
+}
+
+function billSearch(title,type){
+    var url = "bill";
+    $.get(url,"title="+title+"&type="+type,function (){
+
+    })
+}
+function findInvestById_edit(id) {
+    var url = "/findInvestById";
+    $.get(url,"id="+id,function (data) {
+        $("#eid").val(data.id);
+        $("#ename").val(data.name);
+        $("#emoney").val(data.money);
+        $("#erate").val(data.rate);
+        $("#estart").val(data.startDate);
+        $("#eend").val(data.endDate);
+        $("#emsg").val(data.msg);
+        $("#eincome").val(data.income);
+
+    });
+}
+
+function addInvest(){
+    var url = "/addInvest";
+    $.get(url,$("#addInvest").serialize(),function (data){
+        alert(data);
+        window.location.reload();
+    })
+}
+
+function editInvest() {
+    var url = "/editInvest";
+    $.get(url,$("#editInvest").serialize(),function (data){
+        alert(data);
+        window.location.reload();
+    })
+}
+
+
+function deleteInvest(id) {
+    var b = confirm("是否删除该条记录？");
+    if (b) {
+        var url = "/deleteInvest";
+        $.get(url, "id=" + id, function (data) {
+            alert(data);
+            window.location.reload();
+        })
+    }
 }

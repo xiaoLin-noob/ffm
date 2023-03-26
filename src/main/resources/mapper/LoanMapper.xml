@@ -10,10 +10,11 @@
         <result column="money" property="money"/>
         <result column="where" property="where"/>
         <result column="rates" property="rates"/>
-        <result column="duration" property="duration"/>
+        <result column="startDate" property="startDate"/>
+        <result column="endDate" property="endDate"/>
         <result column="payBack" property="payBack"/>
         <result column="msg" property="msg"/>
-        <result column="time" property="time"/>
+        <result column="status" property="status"/>
         <association property="user" javaType="com.lin.ffm.pojo.User">
             <id column="uid" property="id"></id>
             <result column="username" property="username"></result>
@@ -31,15 +32,20 @@
                 and l.where like concat('%',#{where},'%')
             </if>
             <if test="money != null and money != ''">
-                and money = #{money}
+                or money = #{money}
             </if>
-            <if test="msg != null and msg != ''">
-                and msg like concat('%',#{msg},'%')
+            <if test="where != null and where != '' and where != 'null'">
+                or msg like concat('%',#{where},'%')
             </if>
             <if test="userId != null and userId != ''">
                 and userId = #{userId}
             </if>
-
+            <if test="user.houseId != null">
+                and u.houseId = #{user.houseId}
+            </if>
+            <if test="status != null and status != '' and status != 'null'">
+                and l.status = #{status}
+            </if>
         </where>
     </select>
 
@@ -55,8 +61,8 @@
             <if test="rates != null and rates != ''">
                 ,rates=#{rates}
             </if>
-            <if test="duration != null and duration != ''">
-                ,duration=#{duration}
+            <if test="startDate != null and startDate != ''">
+                ,startDate=#{startDate}
             </if>
             <if test="payBack != null and payBack != ''">
                 ,payBack=#{payBack}
@@ -64,8 +70,11 @@
             <if test="msg != null and msg != ''">
                 ,msg=#{msg}
             </if>
-            <if test="time != null and time != ''">
-                ,time=#{time}
+            <if test="endDate != null and endDate != ''">
+                ,endDate=#{endDate}
+            </if>
+            <if test="status != null and status != ''">
+                ,status=#{status}
             </if>
         </set>
         <where>

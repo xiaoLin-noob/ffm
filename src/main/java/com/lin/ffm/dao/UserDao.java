@@ -31,4 +31,7 @@ public interface UserDao {
     @Delete("delete from user where id = #{id}")
     int deleteUser(int id);
 
+    @Update("update user set houseId = #{houseId} where id = #{id}")
+    int changeHouseId(User user);
+
 }

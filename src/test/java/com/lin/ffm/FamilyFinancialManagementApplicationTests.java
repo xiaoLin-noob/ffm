@@ -1,18 +1,23 @@
 package com.lin.ffm;
 
 import com.lin.ffm.dao.BillDao;
+import com.lin.ffm.dao.ItemDao;
 import com.lin.ffm.dao.LoanDao;
 import com.lin.ffm.dao.UserDao;
+import com.lin.ffm.pojo.Item;
 import com.lin.ffm.pojo.Loan;
 import com.lin.ffm.pojo.Message;
 import com.lin.ffm.repository.MessageRepository;
 import com.lin.ffm.service.BillService;
+import com.lin.ffm.service.ItemService;
 import com.lin.ffm.service.LoanService;
 import com.lin.ffm.util.MyMD5Util;
 import com.lin.ffm.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Date;
 
 @SpringBootTest
 class FamilyFinancialManagementApplicationTests {
@@ -87,11 +92,18 @@ class FamilyFinancialManagementApplicationTests {
     @Autowired
     LoanDao loanDao;
 
+    @Autowired
+    ItemService itemDao;
+
     @Test
     public void sqlTest(){
-//        System.out.println(loanService.findLoans(null,1,5));
-        Loan loan = new Loan();
-        System.out.println(loanDao.editLoan(null));
+
+        System.out.println(itemDao.readItem(3));
+    }
+
+    @Test
+    public void timeTest(){
+        System.out.println(new Date());
     }
 
 }

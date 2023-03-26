@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lin.ffm.dao.ItemDao">
+
+
+<resultMap id="allItem" type="java.util.HashMap">
+    <result property="id" column="id"></result>
+    <result property="username" column="username"></result>
+    <result property="msg" column="msg"></result>
+    <result property="time" column="time"></result>
+</resultMap>
+
+
+<select id="allItem" resultMap="allItem">
+    SELECT
+           i.id,u.username,i.msg,i.time,i.isRead
+    FROM
+         item i join user u
+    ON i.userId = u.id
+    where i.addressId =#{id}
+    ORDER BY id desc
+</select>
+
+    <select id="readItem" resultMap="allItem">
+        SELECT
+            i.id,u.username,i.msg,i.time
+        FROM
+            item i join user u
+                        ON i.userId = u.id
+        where i.id =#{id}
+    </select>
+
+
+</mapper>

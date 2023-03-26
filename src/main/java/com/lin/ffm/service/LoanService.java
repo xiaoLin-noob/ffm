@@ -16,4 +16,5 @@ public interface LoanService {
 
     int deleteLoan(int id);
 
+    Double LoanYear(int id,int year,int month);
 }

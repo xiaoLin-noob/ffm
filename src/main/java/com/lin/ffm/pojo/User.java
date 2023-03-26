@@ -8,6 +8,7 @@ public class User {
     private String role;
     private int houseId;
     private int msgId;
+    private int status;
 
     public int getId() {
         return id;
@@ -57,6 +58,14 @@ public class User {
         this.msgId = msgId;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -66,6 +75,7 @@ public class User {
                 ", role='" + role + '\'' +
                 ", houseId='" + houseId + '\'' +
                 ", msgId='" + msgId + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

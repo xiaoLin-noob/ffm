@@ -30,8 +30,9 @@
         join user u on b.userId = u.id
         join payway p on b.paywayid = p.id
         <where>
-            <if test="user.houseId != null and user.houseId != ''"></if>
+            <if test="user.houseId != null">
                 and u.houseId = #{user.houseId}
+            </if>
             <if test="title != null and title != '' and title != 'null'">
                 and title like concat('%',#{title},'%')
             </if>
