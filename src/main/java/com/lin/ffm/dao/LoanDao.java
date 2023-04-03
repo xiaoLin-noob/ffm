@@ -30,4 +30,13 @@ public interface LoanDao {
             "from loan where userId = #{id}\n" +
             "and year(startDate)=#{year}")
     Double LoanYear(int id,int year,int month);
+
+    @Select("select sum(l.money) from loan l join user u on l.userId = u.id where u.houseId = #{houseId}")
+    Double AllLoan(int houseId);
+
+    @Select("select sum(l.money) from loan l where userId = #{userId}")
+    Double AllLoanForId(int userId);
+
+    @Select("select * from loan")
+    List<Loan> loans();
 }

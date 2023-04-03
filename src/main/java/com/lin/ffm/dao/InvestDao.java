@@ -2,6 +2,7 @@ package com.lin.ffm.dao;
 
 
 import com.lin.ffm.pojo.Invest;
+import com.lin.ffm.pojo.Loan;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,4 +32,13 @@ public interface InvestDao {
             "from invest where userId = #{id}\n" +
             "and year(startDate)=#{year}")
     Double InvestYear(int id,int year,int month);
+
+    @Select("select sum(i.money) from invest i join user u on i.userId = u.id where u.houseId = #{houseId}")
+    Double AllInvest(int houseId);
+
+    @Select("select sum(i.money) from invest i where userId = #{userId}")
+    Double AllInvestForId(int userId);
+
+    @Select("select * from invest")
+    List<Invest> invests();
 }

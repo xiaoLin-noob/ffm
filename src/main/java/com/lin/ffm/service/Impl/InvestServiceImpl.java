@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.lin.ffm.dao.InvestDao;
 import com.lin.ffm.pojo.Bill;
 import com.lin.ffm.pojo.Invest;
+import com.lin.ffm.pojo.Loan;
 import com.lin.ffm.service.InvestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,30 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public Double InvestYear(int id, int year, int month) {
         return investDao.InvestYear(id,year,month);
+    }
+
+    @Override
+    public Double AllInvest(int houseId) {
+        return investDao.AllInvest(houseId);
+    }
+
+    @Override
+    public Double AllInvestForId(int userId) {
+        return investDao.AllInvestForId(userId);
+    }
+
+    @Override
+    public PageInfo<Invest> invests(Integer pageNum, Integer pageSize) {
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        if (pageSize == null){
+            pageSize =5;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<Invest> invests = investDao.invests();
+        PageInfo<Invest> page = new PageInfo<>(invests);
+        return page;
     }
 
 

@@ -1,6 +1,8 @@
 package com.lin.ffm.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lin.ffm.pojo.Item;
+import com.lin.ffm.pojo.Loan;
 
 import java.util.List;
 
@@ -19,4 +21,8 @@ public interface ItemService {
     int isReadItem(int id);
 
     int findUserId(int id);
+
+
+    PageInfo<Item> AllItem(Integer pageNum, Integer pageSize);
+
 }

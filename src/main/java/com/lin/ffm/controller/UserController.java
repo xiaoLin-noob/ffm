@@ -39,9 +39,18 @@ public class UserController {
         return "login";
     }
 
+    @RequestMapping("/toRegister")
+    public String toRegister(){
+        return "register";
+    }
+
 
     @RequestMapping("/login")
     public String login(User user, Model model , HttpSession session){
+        if (user.getPassword() == null || user.getUsername() == null){
+            model.addAttribute("msg","用户名或密码不能为空");
+            return "login";
+        }
         User u = userService.login(user);
         boolean flag = false;
         if (u != null){
@@ -55,11 +64,17 @@ public class UserController {
             return "login";
         }
         if (flag){
-            session.setAttribute("USER_SESSION",u);
-            if (u.getRole().equals("admin")){
-                return "admin/client";
+            if (u.getStatus() == 0){
+                session.setAttribute("USER_SESSION",u);
+                switch (u.getRole()){
+                    case "admin":
+                        return "admin/main";
+                    case "user":
+                        return "client/main";
+                }
+            }else {
+                model.addAttribute("msg","账户已被封禁");
             }
-            return "client/main";
         }else {
             model.addAttribute("msg","密码错误");
         }
@@ -121,36 +136,40 @@ public class UserController {
         }
     }
 
-    @ResponseBody
     @RequestMapping("/register")
-    public String register(User user) {
+    public String register(User user,Model model) {
         int result = 0;
         String pwd = null;
         User u = userService.login(user);
-        Message message = new Message();
-        message.setFirstname("暂无信息，点我添加");
-        message.setLastname("暂无信息，点我添加");
-        message.setAddress("暂无信息，点我添加");
-        message.setEmail("暂无信息，点我添加");
-        message.setMsg("暂无信息，点我添加");
-        Message m =messageService.addMessage(message);
         if (u != null) {
-            return "用户名已存在，请重新输入";
+            model.addAttribute("msg","用户名已存在，请重新输入");
+            return "register";
         } else {
             try {
+                Message message = new Message();
+                message.setFirstname("暂无信息，点我添加");
+                message.setLastname("暂无信息，点我添加");
+                message.setAddress("暂无信息，点我添加");
+                message.setEmail("暂无信息，点我添加");
+                message.setMsg("暂无信息，点我添加");
+                Message m =messageService.addMessage(message);
                 //加密
-                pwd = encryptionPwd("123");
+                pwd = encryptionPwd(user.getPassword());
                 user.setPassword(pwd);
                 user.setMsgId(m.getId());
+                user.setHouseId(0);
+                user.setRole("user");
                 result = userService.register(user);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         if (result>0){
-            return "添加成功";
+            model.addAttribute("msg","注册成功");
+            return "login";
         }else {
-            return "未知原因，添加失败";
+            model.addAttribute("msg","未知原因，注册失败，请稍后重试");
+            return "register";
         }
     }
 
@@ -166,30 +185,22 @@ public class UserController {
         return encryptedPwd;
     }
 
-    @RequestMapping("/admin")
-    public String admin(User user,Integer pageNum,Integer pageSize,Model model){
-        PageInfo<User> page = userService.findAllUser(user,pageNum,pageSize);
-        model.addAttribute("page",page);
-        model.addAttribute("search",user);
-        return "admin/client";
-    }
-
     @ResponseBody
     @RequestMapping("/findUserById")
     public User findUserById_edit(int id){
         return userService.findUserById(id);
     }
 
-    @ResponseBody
-    @RequestMapping("/editUser")
-    public String editUser(User user){
-        int i = userService.editUser(user);
-        if (i>0){
-            return "修改成功！";
-        }else {
-            return "修改失败！";
-        }
-    }
+//    @ResponseBody
+//    @RequestMapping("/editUser")
+//    public String editUser(User user){
+//        int i = userService.editUser(user);
+//        if (i>0){
+//            return "修改成功！";
+//        }else {
+//            return "修改失败！";
+//        }
+//    }
 
     @ResponseBody
     @RequestMapping("/deleteUser")

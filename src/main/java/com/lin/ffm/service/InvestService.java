@@ -2,6 +2,7 @@ package com.lin.ffm.service;
 
 import com.github.pagehelper.PageInfo;
 import com.lin.ffm.pojo.Invest;
+import com.lin.ffm.pojo.Loan;
 
 import java.util.List;
 
@@ -18,4 +19,11 @@ public interface InvestService {
     Invest findInvestById(int id);
 
     Double InvestYear(int id,int year,int month);
+    Double AllInvest(int houseId);
+
+    Double AllInvestForId(int userId);
+
+    PageInfo<Invest> invests(Integer pageNum, Integer pageSize);
+
+
 }

@@ -16,6 +16,8 @@ public interface ItemDao {
 
 //    @Select("select * from item where addressId = #{id}")
     List<Item> allItem(int id);
+    @Select("select * from item")
+    List<Item> items();
 
 //    @Select("select * from item where id = #{id}")
     List<Item> readItem(int id);
@@ -31,4 +33,5 @@ public interface ItemDao {
 
     @Update("update item set isRead=1 where id =#{id};")
     int isReadItem(int id);
+
 }

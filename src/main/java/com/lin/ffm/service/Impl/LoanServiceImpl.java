@@ -54,4 +54,28 @@ public class LoanServiceImpl implements LoanService {
     public Double LoanYear(int id, int year, int month) {
         return loanDao.LoanYear(id, year, month);
     }
+
+    @Override
+    public Double AllLoan(int houseId) {
+        return loanDao.AllLoan(houseId);
+    }
+
+    @Override
+    public Double AllLoanForId(int userId) {
+        return loanDao.AllLoanForId(userId);
+    }
+
+    @Override
+    public PageInfo<Loan> loans(Integer pageNum, Integer pageSize) {
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        if (pageSize == null){
+            pageSize =5;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<Loan> loans = loanDao.loans();
+        PageInfo<Loan> page = new PageInfo<>(loans);
+        return page;
+    }
 }

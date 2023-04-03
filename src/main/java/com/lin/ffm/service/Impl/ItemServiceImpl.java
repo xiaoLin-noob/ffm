@@ -1,7 +1,10 @@
 package com.lin.ffm.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lin.ffm.dao.ItemDao;
 import com.lin.ffm.pojo.Item;
+import com.lin.ffm.pojo.Loan;
 import com.lin.ffm.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,4 +50,19 @@ public class ItemServiceImpl implements ItemService {
     public int findUserId(int id) {
         return itemDao.findUserId(id);
     }
+
+    @Override
+    public PageInfo<Item> AllItem(Integer pageNum, Integer pageSize) {
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        if (pageSize == null){
+            pageSize =5;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<Item> items = itemDao.items();
+        PageInfo<Item> page = new PageInfo<>(items);
+        return page;
+    }
+
 }

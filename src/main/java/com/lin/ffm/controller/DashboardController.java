@@ -33,6 +33,17 @@ public class DashboardController {
         List<Double> inYearMoney = yearBill(u.getId(),0);
         List<Double> loanYear = yearLoan(u.getId());
         List<Double> investYear = yearInvest(u.getId());
+        if (u.getHouseId() != 0){
+            model.addAttribute("AllOutMoney",billService.AllOutBill(u.getHouseId()));
+            model.addAttribute("AllinMoney",billService.AllInBill(u.getHouseId()));
+            model.addAttribute("AllLoan",loanService.AllLoan(u.getHouseId()));
+            model.addAttribute("AllInvest",investService.AllInvest(u.getHouseId()));
+        }else {
+            model.addAttribute("AllOutMoney",billService.AllOutBillForId(u.getId()));
+            model.addAttribute("AllinMoney",billService.AllinBillForId(u.getId()));
+            model.addAttribute("AllLoan",loanService.AllLoanForId(u.getId()));
+            model.addAttribute("AllInvest",investService.AllInvestForId(u.getId()));
+        }
         model.addAttribute("billOfYearOut",outYearMoney);
         model.addAttribute("billOfYearIn",inYearMoney);
         model.addAttribute("lianOfYear",loanYear);

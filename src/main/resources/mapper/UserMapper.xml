@@ -32,16 +32,16 @@
     
     <select id="findAllUser" parameterType="com.lin.ffm.pojo.User" resultType="com.lin.ffm.pojo.User">
         select * from user
-        <where>
-            <if test=" username != null and username != '' and username != 'null'">
-                and username like concat('%',#{username},'%')
-            </if>
-            <if test=" role != null and role != '' and role != 'null'">
-                and role=#{role}
-            </if>
-            <if test=" houseId != null">
-                and houseId=#{houseId}
-            </if>
-        </where>
+<!--        <where>-->
+<!--            <if test=" username != null and username != '' and username != 'null'">-->
+<!--                and username like concat('%',#{username},'%')-->
+<!--            </if>-->
+<!--            <if test=" role != null and role != '' and role != 'null'">-->
+<!--                and role=#{role}-->
+<!--            </if>-->
+<!--            <if test=" houseId != null">-->
+<!--                and houseId=#{houseId}-->
+<!--            </if>-->
+<!--        </where>-->
     </select>
 </mapper>

@@ -17,4 +17,9 @@ public interface LoanService {
     int deleteLoan(int id);
 
     Double LoanYear(int id,int year,int month);
+    Double AllLoan(int houseId);
+
+    Double AllLoanForId(int userId);
+
+    PageInfo<Loan> loans(Integer pageNum, Integer pageSize);
 }

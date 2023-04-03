@@ -42,7 +42,6 @@
             <if test="type != null and type != '' and type !='null'">
                 and type = #{type}
             </if>
-
         </where>
     </select>
 

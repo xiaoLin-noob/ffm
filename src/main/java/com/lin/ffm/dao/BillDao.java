@@ -15,6 +15,9 @@ public interface BillDao {
     //@Update("update Bill set title=#{title},money=#{money},type=#{type},payWayId=#{payWayId} where id= #{id}")
     int editBill(Bill bill);
 
+    @Select("select * from bill")
+    List<Bill> ALlBill();
+
 
     @Select("select * from bill where id=#{id}")
     Bill findBillById(int id);
@@ -32,5 +35,17 @@ public interface BillDao {
             "and year(time)=#{year}\n" +
             "and type = #{type};")
     Double outYear(int id,int year,int month,int type);
+
+    @Select("select sum(b.money) from bill b join user u on b.userId = u.id where type = 0 and houseId = #{houseId}")
+    Double AllInBill(int houseId);
+
+    @Select("select sum(b.money) from bill b join user u on b.userId = u.id where type = 1 and houseId = #{houseId}")
+    Double AllOutBill(int houseId);
+
+    @Select("select sum(b.money) from bill b where type = 1 and userId = #{userId}")
+    Double AllOutBillForId(int userId);
+
+    @Select("select sum(b.money) from bill b where type = 0 and userId = #{userId}")
+    Double AllinBillForId(int userId);
 
 }

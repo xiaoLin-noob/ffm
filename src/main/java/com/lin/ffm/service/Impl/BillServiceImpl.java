@@ -55,8 +55,42 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    public Double AllInBill(int houseId) {
+        return billDao.AllInBill(houseId);
+    }
+
+    @Override
+    public Double AllOutBill(int houseId) {
+        return billDao.AllOutBill(houseId);
+    }
+
+    @Override
     public Double outYear(int id, int year,int month, int type) {
         return billDao.outYear(id, year,month, type);
+    }
+
+    @Override
+    public Double AllOutBillForId(int userId) {
+        return billDao.AllOutBillForId(userId);
+    }
+
+    @Override
+    public Double AllinBillForId(int userId) {
+        return billDao.AllinBillForId(userId);
+    }
+
+    @Override
+    public PageInfo<Bill> ALlBill(Integer pageNum,Integer pageSize) {
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        if (pageSize == null){
+            pageSize =5;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<Bill> bills = billDao.ALlBill();
+        PageInfo<Bill> page = new PageInfo<>(bills);
+        return page;
     }
 
 

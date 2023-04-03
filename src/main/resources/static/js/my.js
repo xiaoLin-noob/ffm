@@ -206,3 +206,11 @@ function deleteInvest(id) {
         })
     }
 }
+
+function banUser(id,status) {
+    let url = "/editUser";
+    $.get(url,"id="+id+"&status="+status,function (data){
+        alert(data);
+        window.location.reload();
+    })
+}

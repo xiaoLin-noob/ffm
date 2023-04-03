@@ -25,9 +25,13 @@
             var month = document.getElementById("month").value;
             window.location.href ="/dashboard?selectMonth=" + month;
         }
+
+        function load(){
+            document.getElementById("AllMoney").style.height = document.getElementById("mainPie").offsetHeight- 21 + "px";
+        }
     </script>
 </head>
-<body style="padding-top: 30px;">
+<body onload="load()"style="padding-top: 30px;">
 
 
 
@@ -37,7 +41,7 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4"\>
                         <div class="card">
 
                             <div class="header clear" >
@@ -116,60 +120,84 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-8" style="height: 100%">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">个人收支</h4>
-                                <p class="category">24小时内支出情况</p>
+                                <h4 class="title" th:if="${session.USER_SESSION.getHouseId()} ne 0 ">家庭总流水</h4>
+                                <h4 class="title" th:if="${session.USER_SESSION.getHouseId()} eq 0 ">个人总流水</h4>
+                                <p class="category" th:if="${session.USER_SESSION.getHouseId()} ne 0 ">家庭全部金额情况</p>
+                                <p class="category" th:if="${session.USER_SESSION.getHouseId()} eq 0 ">个人全部金额情况</p>
                             </div>
                             <div class="content">
 
 
-                                <div id="chartHours" class="ct-chart"></div>
+                                <div class="table-responsive" style="width: 100%">
+                                    <table class="table" style="border: none"  id="AllMoney">
+                                        <thead style="border: none">
+                                        <tr>
+                                            <th><h2 class="text-center">总收入</h2></th>
+                                            <th><h2 class="text-center">总支出</h2></th>
+                                            <th><h2 class="text-center">总借贷</h2></th>
+                                            <th><h2 class="text-center">总投资</h2></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border: none">
+                                                <th><h4 style="color: #87CB16" class="text-center" th:text="${AllinMoney}">1111</h4></th>
+                                                <th><h4 style="color: #FF9500" class="text-center" th:text="${AllOutMoney}">2222</h4></th>
+                                                <th><h4 style="color: #FF4A55;" class="text-center" th:text="${AllLoan}">3333</h4></th>
+                                                <th><h4 style="color: #1DC7EA" class="text-center" th:text="${AllInvest}">4444</h4></th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                <script>
-                                    var myChart = echarts.init(document.getElementById('mainPie'));
-                                    window.onresize = function (){
-                                        myChart.resize();
-                                    };
-                                    option = {
-                                        xAxis: {
-                                            data: ['周一', '周二', '周三', '周四', '周五','周六','周日']
-                                        },
-                                        yAxis: {},
-                                        series: [
-                                            {
-                                                data: [10, 22, 28, 43, 49],
-                                                type: 'line',
-                                                stack: 'x',
-                                                areaStyle: {}
-                                            },
-                                            {
-                                                data: [10, 22, 28, 43, 49],
-                                                type: 'line',
-                                                stack: 'x',
-                                                areaStyle: {}
-                                            },
-                                            {
-                                                data: [10, 22, 28, 43, 49],
-                                                type: 'line',
-                                                stack: 'x',
-                                                areaStyle: {}
-                                            },
-                                            {
-                                                data: [5, 4, 3, 5, 10],
-                                                type: 'line',
-                                                stack: 'x',
-                                                areaStyle: {}
-                                            }
-                                        ]
-                                    };
-                                </script>
+
+<!--                                <script>-->
+<!--                                    var myChart = echarts.init(document.getElementById('mainPie'));-->
+<!--                                    window.onresize = function (){-->
+<!--                                        myChart.resize();-->
+<!--                                    };-->
+<!--                                    option = {-->
+<!--                                        xAxis: {-->
+<!--                                            data: ['周一', '周二', '周三', '周四', '周五','周六','周日']-->
+<!--                                        },-->
+<!--                                        yAxis: {},-->
+<!--                                        series: [-->
+<!--                                            {-->
+<!--                                                data: [10, 22, 28, 43, 49],-->
+<!--                                                type: 'line',-->
+<!--                                                stack: 'x',-->
+<!--                                                areaStyle: {}-->
+<!--                                            },-->
+<!--                                            {-->
+<!--                                                data: [10, 22, 28, 43, 49],-->
+<!--                                                type: 'line',-->
+<!--                                                stack: 'x',-->
+<!--                                                areaStyle: {}-->
+<!--                                            },-->
+<!--                                            {-->
+<!--                                                data: [10, 22, 28, 43, 49],-->
+<!--                                                type: 'line',-->
+<!--                                                stack: 'x',-->
+<!--                                                areaStyle: {}-->
+<!--                                            },-->
+<!--                                            {-->
+<!--                                                data: [5, 4, 3, 5, 10],-->
+<!--                                                type: 'line',-->
+<!--                                                stack: 'x',-->
+<!--                                                areaStyle: {}-->
+<!--                                            }-->
+<!--                                        ]-->
+<!--                                    };-->
+<!--                                </script>-->
 
                                 <div class="footer">
                                     <div class="legend">
                                         <i class="fa fa-circle text-success"></i> 收入
                                         <i class="fa fa-circle text-warning"></i> 支出
+                                        <i class="fa fa-circle text-danger"></i> 贷款
+                                        <i class="fa fa-circle text-info"></i> 投资
                                     </div>
                                     <hr>
                                     <div class="stats">
