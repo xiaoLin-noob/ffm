@@ -17,15 +17,29 @@
             height: 100%;
         }
     </style>
+
+<!--    <script>-->
+<!--        function register() {-->
+<!--            let url = "/register";-->
+<!--            var un = document.getElementById("Rusername").value;-->
+<!--            var pw = document.getElementById("Rpassword").value;-->
+<!--            if (un != null && pw != null && un != ""  && pw != ""){-->
+<!--                $.get(url,$("#register").serialize())-->
+<!--            }else {-->
+<!--                alert("用户名或密码不能为空！");-->
+<!--            }-->
+
+<!--        }-->
+<!--    </script>-->
 </head>
 <body>
 <div class="container">
     <div class="login-wrapper">
         <div class="header">账户注册</div>
         <div class="form-wrapper">
-            <form action="/register" method="post">
-                <input type="text" name="username" placeholder="username" class="input-item">
-                <input type="password" name="password" placeholder="password" class="input-item">
+            <form id="register" action="/register" method="post">
+                <input type="text" id="Rusername" name="username" placeholder="username" class="input-item">
+                <input type="password" id="Rpassword" name="password" placeholder="password" class="input-item">
                 <span style="color: #ff0000" th:text="${msg}"></span>
                 <input type="submit" class="btn">
             </form>

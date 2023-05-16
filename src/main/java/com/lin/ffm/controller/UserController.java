@@ -138,6 +138,10 @@ public class UserController {
 
     @RequestMapping("/register")
     public String register(User user,Model model) {
+        if (user.getUsername() == null || user.getPassword() == null || user.getUsername() == "" || user.getPassword() == ""){
+            model.addAttribute("msg","用户名或密码不能为空");
+            return "register";
+        }
         int result = 0;
         String pwd = null;
         User u = userService.login(user);
