@@ -53,9 +53,9 @@
                                     <button type="button" class="btn btn-warning btn-fill" data-toggle="modal"
                                             data-target="#editModal" th:onclick="'javascript:findUserById_edit('+${user.id}+');'">修改</button>
                                     <button th:if="${user.status} eq 0" type="button" class="btn btn-danger btn-fill"
-                                            th:onclick="'javascript:banUser('+${user.id}+','+${user.status}+');'">封禁</button>
+                                            th:onclick="'javascript:editUser('+${user.id}+','+${user.status}+');'">封禁</button>
                                     <button th:if="${user.status} eq 1" type="button" class="btn btn-success btn-fill"
-                                            th:onclick="'javascript:freeUser('+${user.id}+');'">解除</button>
+                                            th:onclick="'javascript:editUser('+${user.id}+','+${user.status}+');'">解除</button>
                                 </td>
                             </tr>
                             </tbody>

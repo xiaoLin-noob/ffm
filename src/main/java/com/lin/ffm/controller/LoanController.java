@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.util.regex.Pattern;
 
 @Controller
@@ -69,9 +70,12 @@ public class LoanController {
 
     @ResponseBody
     @RequestMapping("addLoan")
-    public String addLoan(Loan loan,HttpSession session){
+    public String addLoan(Loan loan,HttpSession session) throws ParseException {
         User u = (User) session.getAttribute("USER_SESSION");
         loan.setUserId(u.getId());
+        if(loan.getPayBack() == null || loan.getPayBack() == 0.0){
+            loan.setPayBack(Tool.getMonthSpace(loan.getEndDate(),loan.getStartDate())*(loan.getRates()*loan.getMoney()/12));
+        }
         int i = loanService.addLoan(loan);
         if (i>0){
             return "添加成功！";

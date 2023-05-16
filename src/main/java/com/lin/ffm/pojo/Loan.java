@@ -9,7 +9,7 @@ public class Loan {
     private double rates;
     private String  startDate;
     private String endDate;
-    private double payBack;
+    private Double payBack;
     private String msg;
     private String status;
 
@@ -73,11 +73,11 @@ public class Loan {
         this.endDate = endDate;
     }
 
-    public double getPayBack() {
+    public Double getPayBack() {
         return payBack;
     }
 
-    public void setPayBack(double payBack) {
+    public void setPayBack(Double payBack) {
         this.payBack = payBack;
     }
 

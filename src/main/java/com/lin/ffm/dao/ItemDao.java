@@ -16,6 +16,7 @@ public interface ItemDao {
 
 //    @Select("select * from item where addressId = #{id}")
     List<Item> allItem(int id);
+
     @Select("select * from item")
     List<Item> items();
 

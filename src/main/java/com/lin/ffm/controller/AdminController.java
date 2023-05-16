@@ -58,7 +58,7 @@ public class AdminController {
 
     @RequestMapping("/allItems")
     public String allItem(Model model,Integer pageNum,Integer pageSize){
-        PageInfo<Item> page = itemService.AllItem(pageNum,pageSize);
+        PageInfo<Item> page = itemService.items(pageNum,pageSize);
         model.addAttribute("page",page);
         return "admin/item";
     }

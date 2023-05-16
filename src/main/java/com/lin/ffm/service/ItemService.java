@@ -23,6 +23,6 @@ public interface ItemService {
     int findUserId(int id);
 
 
-    PageInfo<Item> AllItem(Integer pageNum, Integer pageSize);
+    PageInfo<Item> items(Integer pageNum, Integer pageSize);
 
 }

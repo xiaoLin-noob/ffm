@@ -21,7 +21,7 @@
             <if test=" houseId != null and houseId != ''">
                 ,houseId=#{houseId}
             </if>
-            <if test=" status != null and status != ''">
+            <if test=" status != null">
                 ,status=#{status}
             </if>
             <where>

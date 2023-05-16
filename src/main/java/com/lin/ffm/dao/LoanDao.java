@@ -21,7 +21,7 @@ public interface LoanDao {
     @Delete("delete from loan where id = #{id}")
     int deleteLoan(int id);
 
-    @Insert("INSERT INTO loan (userId,money,loan.where,rates,startDate,endDate,payBack,msg,status) VALUES (#{userId},#{money},#{where},#{rates},#{startDate},#{endDate},#{msg},#{payBack},#{status})")
+    @Insert("INSERT INTO loan (userId,money,loan.where,rates,startDate,endDate,msg,payBack,status) VALUES (#{userId},#{money},#{where},#{rates},#{startDate},#{endDate},#{msg},#{payBack},#{status})")
     int addLoan(Loan loan);
 
     int editLoan(Loan loan);

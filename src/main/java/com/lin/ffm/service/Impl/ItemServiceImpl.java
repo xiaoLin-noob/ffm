@@ -52,7 +52,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public PageInfo<Item> AllItem(Integer pageNum, Integer pageSize) {
+    public PageInfo<Item> items(Integer pageNum, Integer pageSize) {
         if (pageNum == null){
             pageNum = 1;
         }

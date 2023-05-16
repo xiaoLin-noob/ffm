@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @Controller
@@ -21,7 +22,7 @@ public class InvestController {
     InvestService investService;
 
     @RequestMapping("/invest")
-    public String invest(Invest invest, Model model, Boolean me, Integer pageNum, Integer pageSize, HttpSession session){
+    public String invest(Invest invest, Model model, Boolean me, Integer pageNum, Integer pageSize, HttpSession session)  {
         User u = (User) session.getAttribute("USER_SESSION");
         if (me == null){
             me = false;
@@ -75,10 +76,13 @@ public class InvestController {
 
     @ResponseBody
     @RequestMapping("/addInvest")
-    public String addInvest(Invest invest,HttpSession session){
+    public String addInvest(Invest invest,HttpSession session) throws ParseException {
         User u = (User) session.getAttribute("USER_SESSION");
         invest.setUserId(u.getId());
         Boolean b = timeCompare(invest.getStartDate(),invest.getEndDate());
+        if(invest.getIncome() == null  || invest.getIncome() == 0.0){
+            invest.setIncome(Tool.getMonthSpace(invest.getEndDate(),invest.getStartDate())*(invest.getRate()*invest.getMoney()/12));
+        }
         if (b) {
             int i = investService.addInvest(invest);
             if (i > 0) {
