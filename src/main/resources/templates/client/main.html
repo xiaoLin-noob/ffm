@@ -8,7 +8,7 @@
 <!--  CSS for Demo Purpose, don't include it in your project     -->
 <link href="/css/demo.css" rel="stylesheet" th:href="@{/css/demo.css}"/>
 <!--     Fonts and icons     -->
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">-->
 <link href="/css/pe-icon-7-stroke.css" rel="stylesheet" th:href="@{/css/pe-icon-7-stroke.css}"/>
 
     <script type="text/javascript">
@@ -16,7 +16,7 @@
             var iframeid = document.getElementById("iframe");
             if (document.getElementById) {
                 /*设置 内容展示区的高度等于页面可视区的高度*/
-                iframeid.height = document.documentElement.clientHeight * 0.9;
+                iframeid.height = document.documentElement.clientHeight * 0.86;
             }
         }
 
@@ -47,7 +47,7 @@
 
         function InviteUser(id){
             var url = "inviteUser";
-            var b = confirm("确定邀请该用户吗？用户进入家庭组后可查看其它成员的账单信息")
+            var b = confirm("确定邀请该用户吗？该用户进入家庭组后可查看其它成员的账单信息")
             if (b){
                 $.get(url, "id=" + id, function (data) {
                     alert(data);
@@ -75,7 +75,7 @@
                         out +='<tr>' +
                             '<th>'+data[i].id+'</th>' +
                             '<td>'+data[i].username+'</td>' +
-                            '<td><button class="btn btn-sm btn-default" onclick="InviteUser('+data[i].id+');">邀请加入</button></td>' +
+                            '<td><button class="btn btn-sm btn-fill btn-primary" onclick="InviteUser('+data[i].id+');">邀请加入</button></td>' +
                             '</tr>';
                     }
                     document.getElementById("InviteBox").innerHTML=out;
@@ -99,11 +99,23 @@
                 dataType:"json",
                 success:function (data){
                     var out = "";
+
                     for (var i=0;i<data.length;i++){
-                        out += '<dt>用户名:</dt>'+ '<dd>'+data[i].username+'</dd>'
-                        ;
+                        // var message = "";
+                        // message=getMessage(data[i].msgId);
+                        // $.get("getMessage", "msgId=" + data[i].msgId,function (m){
+                        //     // message = '<dd>'+m.firstname+'</dd>' +
+                        //     //     '<dd>'+m.email+'</dd>';
+                        // });
+                        // alert(message);
+                        out += '<div style="padding-top: 20px; font-size: 30px">' +
+                            '<dt>成员'+(i+1)+':</dt>' +
+                            '<dd>'+data[i].username+'</dd>' +
+                            // '<dd>'+message.firstname+'</dd>'+
+                            // message+
+                            '</div>';
                     }
-                    out+='<button style="width: 100%" onclick="outFamily()" class="btn btn-danger btn-fill">退出当前家庭组</button>';
+                    // out+='<button style="width: 100%;margin-top: 20px"  onclick="outFamily()" class="btn btn-danger btn-fill">退出当前家庭组</button>';
                     document.getElementById("familyBox").innerHTML=out;
                 },
                 error:function (){
@@ -113,6 +125,10 @@
             }else
                 document.getElementById("familyBox").innerHTML='<h1 class="text-center" style="color: red">请先加入家庭组!</h1>';
         }
+
+        // function getMessage(i) {
+        //     $.get("http://localhost:8080", "msgId=" + i);
+        // }
 
         function outFamily() {
             var  b = confirm("确定要退出当前家庭组吗？");
@@ -130,8 +146,8 @@
         function readItem(id){
             $.get("/readItem","id="+id, function (data) {
                 document.getElementById('item_username').innerHTML="发件人："+data[0].username;
-                document.getElementById('item_msg').innerHTML="正文"+data[0].msg;
-                document.getElementById('item_time').innerHTML="时间"+data[0].time;
+                document.getElementById('item_msg').innerHTML=data[0].msg;
+                document.getElementById('item_time').innerHTML=data[0].time;
                 document.getElementById('item_id').value=data[0].id;
             })
         }
@@ -263,7 +279,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a id="minTitle" class="navbar-brand" href="#">LOAN</a>
+                    <a id="minTitle" class="navbar-brand" href="#">USER</a>
                 </div>
                 <div class="collapse navbar-collapse card-out">
                     <ul class="nav navbar-nav navbar-left card-out" style="height: 61px">
@@ -348,7 +364,7 @@
                     </ul>
                 </nav>
                 <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="https://github.com/xiaoLin-noob">Creative Tim</a>, made with love for a better web
+                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="https://github.com/xiaoLin-noob">Family Financial Management</a>, made with love for a better family
                 </p>
             </div>
         </footer>
@@ -440,6 +456,7 @@
             <dl  class="dl-horizontal" id="familyBox" style="padding-top: 10px">
 
             </dl>
+            <button style="width: 100%;margin-top: 20px"  onclick="outFamily()" class="btn btn-danger btn-fill">退出当前家庭组</button>
         </div>
     </div>
 </div>

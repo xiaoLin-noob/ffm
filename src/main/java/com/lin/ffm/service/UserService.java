@@ -11,7 +11,7 @@ public interface UserService {
 
     PageInfo<User> findAllUser(User user, Integer pageNum, Integer pageSize);
 
-    List<User> findFamily(User user);
+    List<User> findFamily(int houseId);
 
     int changeHouseId(User user);
 

@@ -95,9 +95,9 @@ public class ItemController {
     @RequestMapping("/findFamily")
     public List<User> findFamily(HttpSession session){
         User u  = (User) session.getAttribute("USER_SESSION");
-        User user = new User();
-        user.setHouseId(u.getHouseId());
-        return userService.findFamily(user);
+//        User user = new User();
+//        user.setHouseId(u.getHouseId());
+        return userService.findFamily(u.getHouseId());
 
     }
 

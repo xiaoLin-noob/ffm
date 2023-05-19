@@ -245,9 +245,14 @@ public class UserController {
     @RequestMapping("/notHome")
     @ResponseBody
     public List<User> findNotHomeUsers(){
-        User u = new User();
-        u.setHouseId(0);
-        return userService.findUsers(u);
+        return userService.findFamily(0);
     }
+
+    @ResponseBody
+    @RequestMapping("/getMessage")
+    public Message getMessage(int msgId){
+        return messageService.findMsgById(msgId);
+    }
+
 
 }

@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findFamily(User user) {
-        return userDao.findAllUser(user);
+    public List<User> findFamily(int houseId) {
+        return userDao.findFamily(houseId);
     }
 
     @Override

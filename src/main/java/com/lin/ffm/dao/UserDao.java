@@ -34,6 +34,8 @@ public interface UserDao {
     @Update("update user set houseId = #{houseId} where id = #{id}")
     int changeHouseId(User user);
 
-    @Select("select * from user")
-    List<User> AllUser();
+    @Select("select * from user where houseId = #{houseId}")
+    List<User> findFamily(int houseId);
+
+
 }
