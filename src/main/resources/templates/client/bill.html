@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="utf-8" />
   <link rel="icon" type="image/png" href="/img/favicon.ico">
@@ -20,20 +20,26 @@
 <!--  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">-->
   <link href="/css/pe-icon-7-stroke.css" rel="stylesheet" th:href="@{/css/pe-icon-7-stroke.css}"/>
 
+
+
 </head>
 <body style="padding-top: 30px;">
 
 
 <div class="text-center">
-  <form action="/bill">
-    <input name="title"/>
-    <input name="me" type="checkbox" value="true">只看我</input>
-    <select name="type">
+  <form class="form-inline" action="/bill">
+
+      <input name="title" id="title" placeholder="title">
+
+
+        <input name="me" type="checkbox"> 只看我
+
+    <select class="select" name="type">
       <option value="">全部</option>
       <option value="0">收入</option>
       <option value="1">支出</option>
     </select>
-    <input type="submit"/>
+    <button type="submit">搜索</button>
   </form>
 </div>
 
@@ -93,7 +99,7 @@
   <div id="pagination" style="display: block" class="pagination">
     <ul class="pagination" style="margin-left: 45%">
       <li th:each="i:${#numbers.sequence(1,page.pages)}" >
-        <a th:href="'/bill?title='+${search.title}+'&type='+${search.type}+'&pageNum='+${i}" th:text="${i}"></a>
+        <a th:href="'/bill?title='+${search.title}+'&type='+${search.type}+'&me='+${me}+'&pageNum='+${i}" th:text="${i}"></a>
       </li>
     </ul>
   </div>

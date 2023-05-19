@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">电子邮箱</label>
+                                                <label >电子邮箱</label>
                                                 <input type="email" name="email" class="form-control" placeholder="Email" th:value="${userMsg.email}">
                                             </div>
                                         </div>
@@ -101,7 +101,7 @@
                             </div>
                             <div class="content">
                                 <div class="author">
-                                    <img class="avatar border-gray" src="@{/avatar/{{userMsg.img}}}" th:src="@{userImg}"/>
+                                    <img class="avatar border-gray" src="/img/face-0.jpg" th:src="@{/img/face-0.jpg}"/>
 
                                       <h4 class="title" th:text="${user.username}">Mike Andrew</h4>
                                          <small th:text="${userMsg.email}">michael24</small>

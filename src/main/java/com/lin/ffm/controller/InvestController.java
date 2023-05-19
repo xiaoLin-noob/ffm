@@ -37,6 +37,7 @@ public class InvestController {
         PageInfo<Invest> page = investService.findInvest(invest,pageNum,pageSize);
         model.addAttribute("page",page);
         model.addAttribute("search",invest);
+        model.addAttribute("me",me);
         return "client/invest";
     }
 

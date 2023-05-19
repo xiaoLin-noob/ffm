@@ -37,6 +37,7 @@ public class LoanController {
         PageInfo<Loan> page = loanService.findLoans(loan,pageNum,pageSize);
         model.addAttribute("page",page);
         model.addAttribute("search",loan);
+        model.addAttribute("me",me);
         return "client/loan";
     }
 

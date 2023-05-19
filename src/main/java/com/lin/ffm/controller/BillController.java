@@ -36,6 +36,7 @@ public class BillController {
         PageInfo<Bill> page = billService.findBills(bill,pageNum,pageSize);
         model.addAttribute("page",page);
         model.addAttribute("search",bill);
+        model.addAttribute("me",me);
         return "client/bill";
     }
 
