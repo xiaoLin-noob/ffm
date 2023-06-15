@@ -62,7 +62,6 @@ public class DashboardController {
             model.addAttribute("monthInvest",investYear.get(selectMonth-1));
 
         }
-
         return "client/dashboard";
     }
 

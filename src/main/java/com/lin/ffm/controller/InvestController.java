@@ -44,7 +44,6 @@ public class InvestController {
     @RequestMapping("/findInvestById")
     @ResponseBody
     public Invest findInvestById(int id){
-        System.out.println(investService.findInvestById(id));
         return investService.findInvestById(id);
     }
 
@@ -61,7 +60,6 @@ public class InvestController {
             }
         }
             return "结束日期不能小于开始日期!";
-
     }
 
     @ResponseBody

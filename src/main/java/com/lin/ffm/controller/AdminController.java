@@ -9,10 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class AdminController {
+    Calendar calendar = Calendar.getInstance();
+    int month = calendar.get(Calendar.MONTH);
+    int year = calendar.get(Calendar.YEAR);
     @Autowired
     private BillService billService;
 
@@ -28,32 +31,122 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/allBill")
-    public String allBill(Model model,Integer pageNum,Integer pageSize){
-        PageInfo<Bill> page = billService.ALlBill(pageNum,pageSize);
-        model.addAttribute("page",page);
-        return "admin/allBill";
+    @Autowired
+    private AdminService adminService;
+
+    @RequestMapping("/allFamilyDashboard")
+    public String allFamilyDashboard(Model model){
+        List<Integer>houseIds=adminService.findAllHouseId();
+        List<Map<String,Object>>houseDatas = new ArrayList<>();
+        for (int houseId:houseIds){
+            Map<String,Object> houseData = new HashMap<>();
+            List<Double> outBillOfHouse = null;
+            outBillOfHouse = billOfHouse(houseId,1);
+            List<Double> inBillOfHouse = null;
+            inBillOfHouse = billOfHouse(houseId,0);
+            List<Double> loanHouse = null;
+            loanHouse = loanOfHouse(houseId);
+            List<Double> investHouse = null;
+            investHouse = investOfHouse(houseId);
+            houseData.put("houseId",houseId);
+            houseData.put("outBillOfHouse",outBillOfHouse);
+            houseData.put("inBillOfHouse",inBillOfHouse);
+            houseData.put("loanHouse",loanHouse);
+            houseData.put("investHouse",investHouse);
+            houseDatas.add(houseData);
+        }
+        model.addAttribute("houseDates",houseDatas);
+        System.out.println(houseDatas);
+        return "admin/allFamilyDashboard";
     }
+
+    @RequestMapping("/allUserDashboard")
+    public String allUserDashboard(Model model){
+        List<Map<String,Object>>userDatas = new ArrayList<>();
+        List<Integer> userIds=adminService.findAllUserId();
+        for (int id:userIds){
+            Map<String,Object> userData = new HashMap<>();
+            List<Double> outYearMoney = null;
+            outYearMoney = yearBill(id,1);
+            List<Double> inYearMoney = null;
+            inYearMoney = yearBill(id,0);
+            List<Double> loanYear = null;
+            loanYear = yearLoan(id);
+            List<Double> investYear = null;
+            investYear = yearInvest(id);
+            userData.put("userId",id);
+            userData.put("billOut",outYearMoney.get(month));
+            userData.put("billIn",inYearMoney.get(month));
+            userData.put("loan",loanYear.get(month));
+            userData.put("invest",investYear.get(month));
+
+            userData.put("lastBillOut",outYearMoney.get(month-1));
+            userData.put("lastBillIn",inYearMoney.get(month-1));
+            userData.put("lastLoan",loanYear.get(month-1));
+            userData.put("lastInvest",investYear.get(month-1));
+            userDatas.add(userData);
+        }
+
+        model.addAttribute("userDatas",userDatas);
+        return "admin/allUserDashboard";
+    }
+
+    public List<Double> yearLoan(int id){
+        List<Double> l = new ArrayList<>();
+        for (int i=1;i<=12;i++){
+            l.add(loanService.LoanYear(id,year,i));
+        }
+        return l;
+    }
+
+    public List<Double> yearInvest(int id){
+        List<Double> I = new ArrayList<>();
+        for (int i=1;i<=12;i++){
+            I.add(investService.InvestYear(id,year,i));
+        }
+        return I;
+    }
+
+    public List<Double> yearBill(int id, int type){
+        List<Double> out =new ArrayList<>();
+        for (int i=1;i<=12;i++){
+            out.add(billService.outYear(id,year,i,type));
+        }
+        return out;
+    }
+
+    public List<Double> billOfHouse(int houseId, int type){
+        List<Double> out = new ArrayList<>();
+        for (int i=1;i<=month;i++){
+            out.add(adminService.billOfHouse(year,i,type,houseId));
+        }
+        return out;
+    }
+
+    public List<Double> investOfHouse(int houseId){
+        List<Double> out = new ArrayList<>();
+        for (int i=1;i<=month;i++){
+            out.add(adminService.investOfHouse(year,i,houseId));
+        }
+        return out;
+    }
+
+    public List<Double> loanOfHouse(int houseId){
+        List<Double> out = new ArrayList<>();
+        for (int i=1;i<=month;i++){
+            out.add(adminService.loanOfHouse(year,i,houseId));
+        }
+        return out;
+    }
+
+
+
 
     @RequestMapping("/allUser")
     public String allUser(Model model,Integer pageNum,Integer pageSize,User user){
         PageInfo<User> page = userService.findAllUser(user,pageNum,pageSize);
         model.addAttribute("page",page);
         return "admin/user";
-    }
-
-    @RequestMapping("/allLoan")
-    public String allLoan(Model model,Integer pageNum,Integer pageSize,Loan loan){
-        PageInfo<Loan> page = loanService.loans(pageNum,pageSize);
-        model.addAttribute("page",page);
-        return "admin/loan";
-    }
-
-    @RequestMapping("/allInvest")
-    public String allInvest(Model model,Integer pageNum,Integer pageSize,Invest invest){
-        PageInfo<Invest> page = investService.invests(pageNum,pageSize);
-        model.addAttribute("page",page);
-        return "admin/invest";
     }
 
     @RequestMapping("/allItems")
@@ -84,17 +177,5 @@ public class AdminController {
         }
     }
 
-//    @RequestMapping("/freeUser")
-//    @ResponseBody
-//    public String freeUser(int id){
-//        User user = new User();
-//        user.setId(id);
-//        user.setStatus(1);
-//        int i =userService.editUser(user);
-//        if (i>0){
-//            return "封禁成功！";
-//        }else {
-//            return "封禁失败";
-//        }
-//    }
+
 }

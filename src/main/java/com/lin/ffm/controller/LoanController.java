@@ -40,7 +40,6 @@ public class LoanController {
         model.addAttribute("me",me);
         return "client/loan";
     }
-
     @ResponseBody
     @RequestMapping("findLoanById")
     public Loan findLoanById(int id){

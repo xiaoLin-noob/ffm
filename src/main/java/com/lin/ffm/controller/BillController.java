@@ -41,12 +41,6 @@ public class BillController {
     }
 
     @ResponseBody
-    @RequestMapping("findBillById")
-    public Bill findBillById(int id){
-        return billService.findBillById(id);
-    }
-
-    @ResponseBody
     @RequestMapping("editBill")
     public String editBill(Bill bill){
         int i = billService.editBill(bill);
@@ -79,5 +73,11 @@ public class BillController {
         }else {
             return "添加失败！";
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("findBillById")
+    public Bill findBillById(int id){
+        return billService.findBillById(id);
     }
 }
